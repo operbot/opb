@@ -5,7 +5,7 @@ README
 **NAME**
 
 
-**OPB** - object programming bot.
+``OPB`` - object programming bot.
 
 
 **SYNOPSIS**
@@ -17,19 +17,19 @@ README
 
 **DESCRIPTION**
 
-**OPB** is a bot, intended to be programmable, with a client program to
+``OPB`` is a bot, intended to be programmable, with a client program to
 develop modules on and a systemd version with code included to run a 24/7
 presence in a channel. 
 
 
-**OPB** stores it's data on disk where objects are time versioned and the
+``OPB`` stores it's data on disk where objects are time versioned and the
 last version saved on disk is served to the user layer. Files are JSON dumps
 that are read-only so thus should provide (disk) persistence. Paths carry the
 type in the path name what makes reconstruction from filename easier then
 reading type from the object.
 
 
-**OPB** has some functionality, mostly feeding RSS feeds into a irc
+``OPB`` has some functionality, mostly feeding RSS feeds into a irc
 channel. It can do some logging of txt and take note of things todo.
 
 
@@ -231,4 +231,4 @@ B.H.J. Thate - operbot100@gmail.com
 **COPYRIGHT**
 
 
-``opb`` is placed in the Public Domain.
+``OPB`` is placed in the Public Domain.
