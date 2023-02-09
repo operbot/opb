@@ -12,6 +12,7 @@ from .message import Message
 from .objects import Object, format, items, keys, kind, oid, search, update
 from .objects import values
 from .parsers import Parsed
+from .runtime import Cfg
 from .storage import Storage, last, save
 from .threads import launch
 from .utility import *
@@ -19,6 +20,7 @@ from .utility import *
 
 def __dir__():
     return (
+            'Cfg',
             'Command',
             'Default',
             'Object',

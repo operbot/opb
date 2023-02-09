@@ -2,9 +2,6 @@
 # This file is placed in the Public Domain.
 
 
-"object programming bot"
-
-
 import os
 import readline
 import sys
@@ -24,7 +21,10 @@ from opb.modules import cmd, fnd, irc, log, rss
 
 
 Cfg = Default()
-Storage.workdir = os.path.expanduser("~/.opb")
+Cfg.name = "opb"
+
+
+Storage.workdir = os.path.expanduser("~/.%s" % Cfg.name)
 
 
 scan(cmd)
@@ -75,8 +75,8 @@ def waiter():
     for ex in Handler.errors:
         traceback.print_exception(type(ex), ex, ex.__traceback__)
         got.append(ex)
-    for exc in got:
-        Handler.errors.remove(exc)
+    #for exc in got:
+    #    Handler.errors.remove(exc)
 
 
 def wrap(func):
@@ -110,19 +110,19 @@ def main():
         Cfg.wait = False
         e.wait()
     elif "d" in Cfg.opts:
-        privileges("opb")
+        privileges(Cfg.name)
         daemon()
         Cfg.wait = True
     elif "c" in Cfg.opts:
         date = time.ctime(time.time()).replace("  ", " ")
-        print(f"OPB started {date}")
+        print(f"{Cfg.name.upper()} started {date}")
         csl = Console()
         csl.start()
         Cfg.wait = True
     if Cfg.wait:
         irc.init()
         rss.init()
-        wait(waiter)
+        wait()
 
 
 wrap(main)

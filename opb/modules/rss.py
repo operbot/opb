@@ -1,12 +1,10 @@
 # This file is placed in the Public Domain.
 
 
-"rich site syndicate"
-
-
 import html.parser
 import re
 import threading
+import time
 import urllib
 import _thread
 
@@ -300,7 +298,7 @@ def rss(event):
             event.reply("%s %s %s" % (
                                    nrs,
                                    format(feed),
-                                   elapsed(fntime(fnm))
+                                   elapsed(time.time()-fntime(fnm))
                                   )
                        )
             nrs += 1

@@ -37,7 +37,7 @@ def __dir__():
 __all__ = __dir__()
 
 
-name = "opb"
+name = "operbot"
 saylock = _thread.allocate_lock()
 
 
@@ -54,17 +54,17 @@ class NoUser(Exception):
 
 class Config(Default):
 
-    channel = "#%s" % name
+    channel = "#opb"
     control = "!"
-    nick = name
+    nick =  "opb"
     password = ""
     port = 6667
     realname = name
     sasl = False
     server = "localhost"
-    servermodes = ""
+    servermodes = "opb"
     sleep = 60
-    username = name
+    username = "opb"
     users = False
 
     def __init__(self):

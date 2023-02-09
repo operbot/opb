@@ -2,13 +2,15 @@
 # This file is placed in the Public Domain.
 
 
-"object programming bot daemon"
-
-
+import os
+import sys
 import traceback
 
 
-from opb import Handler, Storage, privileges, scan, wait
+sys.path.insert(0, os.getcwd())
+
+
+from opb import Cfg, Handler, Storage, privileges, scan, wait
 from opb.modules import cmd, irc, rss
 
 
@@ -17,6 +19,20 @@ Storage.workdir = "/var/lib/opb/"
 
 scan(cmd)
 scan(rss)
+
+
+def daemon():
+    pid = os.fork()
+    if pid != 0:
+        os._exit(0)
+    os.setsid()
+    os.umask(0)
+    sis = open("/dev/null", 'r')
+    os.dup2(sis.fileno(), sys.stdin.fileno())
+    sos = open("/dev/null", 'a+')
+    ses = open("/dev/null", 'a+')
+    os.dup2(sos.fileno(), sys.stdout.fileno())
+    os.dup2(ses.fileno(), sys.stderr.fileno())
 
 
 def waiter():
@@ -29,6 +45,7 @@ def waiter():
 
 
 def main():
+    daemon()
     #privileges("opb")
     irc.init()
     rss.init()
