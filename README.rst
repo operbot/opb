@@ -5,14 +5,14 @@ README
 **NAME**
 
 
-**OPB** - object programming bot.
+``OPB`` - object programming bot.
 
 
 **SYNOPSIS**
 
+::
 
-| ``opb ]<cmd>|-c|-d] [key=value] [key==value]``
-|
+opb [<cmd>|-c|-d] [key=value] [key==value]
 
 
 **DESCRIPTION**
@@ -38,14 +38,14 @@ channel. It can do some logging of txt and take note of things todo.
 
 ::
 
-pip3 install opb
+ pip3 install opb
 
 
 **CONFIGURATION**
 
 
-| configuration is done by calling the ``cfg`` command of ``opb``
-| 
+configuration is done by calling the ``cfg`` command of ``opb``
+
 
 **irc**
 
@@ -60,8 +60,8 @@ pip3 install opb
 
 ::
 
-opb pwd <nickservnick> <nickservpass>``
-opb cfg password=<outputfrompwd>``
+ opb pwd <nickservnick> <nickservpass>``
+ opb cfg password=<outputfrompwd>``
 
 
 
@@ -71,20 +71,20 @@ opb cfg password=<outputfrompwd>``
 as default the user's userhost is not checked when a user types a command in a
 channel. To enable userhost checking enable users with the ``cfg`` command::
 
-opb cfg users=True
+ opb cfg users=True
 
 
 To add a user to the bot use the met command::
 
 
-opb met <userhost>
+ opb met <userhost>
 
 
 
 to delete a user use the del command with a substring of the userhost::
 
 
-opb del <substring>
+ opb del <substring>
 
 
 
@@ -93,7 +93,7 @@ opb del <substring>
 ::
 
 
-$ opb rss <url>
+ opb rss <url>
 
 
 
@@ -107,7 +107,7 @@ this part shows how to run ``opb``.
 
 
 without any arguments ``opb`` doesn't respond, add arguments to have
-``opr`` execute a command::
+``opb`` execute a command::
 
 
 $ opb
@@ -215,20 +215,20 @@ to run the bot after reboot, install the service file and start the service
 by enabling it with ``--now``::
 
 
-$ ``sudo systemctl enable /usr/local/opb/opb.service  --now``
+ $ sudo systemctl enable /usr/local/opb/opb.service  --now
 
-(*) default channel/server is #opb on localhost
+ (*) default channel/server is #opb on localhost
 
 
 use ``opbctl`` instead of the use ``opb`` program::
 
 
-$ ``sudo opbctl cfg server=<server> channel=<channel> nick=<nick>``
-$ ``sudo opbctl pwd <nickservnick> <nickservpass>``
-$ ``sudo opbctl cfg password=<outputfrompwd>``
-$ ``sudo opbctl cfg users=True``
-$ ``sudo opbctl met <userhost>``
-$ ``sudo opbctl rss <url>``
+ $ sudo opbctl cfg server=<server> channel=<channel> nick=<nick>``
+ $ sudo opbctl pwd <nickservnick> <nickservpass>``
+ $ sudo opbctl cfg password=<outputfrompwd>``
+ $ sudo opbctl cfg users=True``
+ $ sudo opbctl met <userhost>``
+ $ sudo opbctl rss <url>``
 
 
 **AUTHOR**
