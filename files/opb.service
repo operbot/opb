@@ -1,0 +1,17 @@
+[Unit]
+Description=object programming bot
+After=multi-user.target
+
+[Service]
+Type=simple
+User=opb
+Group=opb
+DynamicUser=yes
+StateDirectory=opb
+LogsDirectory=opb
+CacheDirectory=opb
+ExecStart=/usr/local/bin/opbd
+CapabilityBoundingSet=CAP_NET_RAW
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,38 @@
+#!/usr/bin/env python3
+# This file is placed in the Public Domain.
+
+
+"object programming bot daemon"
+
+
+import traceback
+
+
+from opb import Handler, Storage, privileges, scan, wait
+from opb.modules import cmd, irc, rss
+
+
+Storage.workdir = "/var/lib/opb/"
+
+
+scan(cmd)
+scan(rss)
+
+
+def waiter():
+    got = []
+    for ex in Handler.errors:
+        traceback.print_exception(type(ex), ex, ex.__traceback__)
+        got.append(ex)
+    for exc in got:
+        Handler.errors.remove(exc)
+
+
+def main():
+    #privileges("opb")
+    irc.init()
+    rss.init()
+    wait(waiter)
+
+
+main()
