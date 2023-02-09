@@ -5,15 +5,13 @@ README
 **NAME**
 
 
+**OPB** - object programming bot.
 
-| ``OPB`` - object programming bot.
-|
 
 **SYNOPSIS**
 
 
-| ``opb [-c|-d|-h]``
-| ``opb <cmd> [key=value] [key==value]``
+| ``opb ]<cmd>|-c|-d] [key=value] [key==value]``
 |
 
 
@@ -38,9 +36,10 @@ channel. It can do some logging of txt and take note of things todo.
 
 **INSTALL**
 
+::
 
-| ``pip3 install opb``
-|
+pip3 install opb
+
 
 **CONFIGURATION**
 
@@ -50,132 +49,122 @@ channel. It can do some logging of txt and take note of things todo.
 
 **irc**
 
+::
 
-| ``opb cfg server=<server> channel=<channel> nick=<nick>``
-|
-| ``(*) default channel/server is #opb on localhost``
-|
+ opb cfg server=<server> channel=<channel> nick=<nick>
+
+ (*) default channel/server is #opb on localhost
 
 
 **sasl**
 
+::
 
-| ``opb pwd <nickservnick> <nickservpass>``
-| ``opb cfg password=<outputfrompwd>``
-|
+opb pwd <nickservnick> <nickservpass>``
+opb cfg password=<outputfrompwd>``
+
+
 
 **users**
 
 
 as default the user's userhost is not checked when a user types a command in a
-channel. To disable userhost checking disable users with the ``cfg`` command:
+channel. To enable userhost checking enable users with the ``cfg`` command::
 
-| ``opb cfg users=False``
-|
-
-To add a user to the bot use the met command:
+opb cfg users=True
 
 
-| ``opb met <userhost>``
-|
+To add a user to the bot use the met command::
 
 
-to delete a user use the del command with a substring of the userhost:
+opb met <userhost>
 
 
-| ``opb del <substring>``
-|
+
+to delete a user use the del command with a substring of the userhost::
+
+
+opb del <substring>
 
 
 
 **rss**
 
+::
 
-| ``opb rss <url>``
-|
+
+$ opb rss <url>
+
 
 
 **RUNNING**
 
-| this part shows how to run ``opb``.
-|
+
+this part shows how to run ``opb``.
 
 
 **cli**
 
 
 without any arguments ``opb`` doesn't respond, add arguments to have
-``opr`` execute a command:
+``opr`` execute a command::
 
 
-| ``$ opb``
-| ``$``
-|
-
-the ``cmd`` command shows you a list of available commands:
+$ opb
+$
 
 
-| ``$ opb cmd``
-| ``cfg,cmd,dlt,dpl,flt,fnd,ftc,met,krn,mre,nme,pwd,rem,rss,thr,upt``
-|
+the ``cmd`` command shows you a list of available commands::
+
+
+$ opb cmd
+cfg,cmd,dlt,dpl,flt,fnd,ftc,met,krn,mre,nme,pwd,rem,rss,thr,upt
+
 
 
 **console**
 
 
-| use the -c option to start the bot as a console.
-|
-| ``$ opb -c mod=irc,rss,cmd``
-| ``OPB started at Fri Jan 6 01:49:58 2023 version=111 console=True mod=irc,rss,cmd``
-| ``> cmd``
-| ``cmd,dlt,dpl,flt,ftc,krn,log,met,mre,nme,pwd,rem,rss,thr,upt``
-| ``>``
-|
+use the -c option to start the bot as a console::
 
-running the bot in the background is done with the -d option.
+$ opb -c 
+OPB started at Fri Jan 6 01:49:58 2023
+> cmd
+cmd,dlt,dpl,flt,ftc,krn,log,met,mre,nme,pwd,rem,rss,thr,upt
+>
 
 
-| ``$ opb -d``
-| ``$``
-|
+running the bot in the background is done with the -d option::
 
-the bot has a -h option to show a short help message.
-
-
-| ``opb [-c|-d|-h] [cfg|cmd|fnd|dlt|krn|met|mre|pwd|dpl|ftc|nme|rem|rss|flt|thr|upt]``
-|
-| ``-h show help``
-| ``-c start console``
-| ``-d daemonize``
-|
+$ opb -d
+$
 
 
 **COMMANDS**
 
 
-| here is a short description of the commands.
-|
-| ``cfg`` - show the irc configuration, also edits the config
-| ``cmd`` - show all commands
-| ``dlt`` - remove a user
-| ``dne`` - flag todo as done
-| ``dpl`` - set display items for a rss feed
-| ``flt`` - show a list of bot registered to the bus
-| ``fnd`` - allow you to display objects on the datastore, read-only json files on disk 
-| ``ftc`` - run a rss feed fetching batch
-| ``krn`` - kernel
-| ``log`` - log some text
-| ``met`` - add a users with there irc userhost
-| ``mre`` - displays cached output, channel wise.
-| ``nme`` - set name of a rss feed
-| ``pwd`` - combine a nickserv name/password into a sasl password
-| ``rem`` - remove a rss feed by matching is to its url
-| ``rss`` - add a feed to fetch, fetcher runs every 5 minutes
-| ``thr`` - show the running threads
-| ``tdo`` - adds a todo item, no options returns list of todo's
-| ``upt`` - show uptime
-| ``ver`` - show version
-|
+here is a short description of the commands::
+
+cfg - show the irc configuration, also edits the config
+cmd - show all commands
+dlt - remove a user
+dne - flag todo as done
+dpl - set display items for a rss feed
+flt - show a list of bot registered to the bus
+fnd - allow you to display objects on the datastore, read-only json files on disk 
+ftc - run a rss feed fetching batch
+krn - kernel
+log - log some text
+met - add a users with there irc userhost
+mre - displays cached output, channel wise.
+nme - set name of a rss feed
+pwd - combine a nickserv name/password into a sasl password
+rem - remove a rss feed by matching is to its url
+rss - add a feed to fetch, fetcher runs every 5 minutes
+thr - show the running threads
+tdo - adds a todo item, no options returns list of todo's
+upt - show uptime
+ver - show version
 
 
 **PROGRAMMING**
@@ -231,16 +220,16 @@ $ ``sudo systemctl enable /usr/local/opb/opb.service  --now``
 (*) default channel/server is #opb on localhost
 
 
-use ``opbctl`` instead of the use ``opb`` program
+use ``opbctl`` instead of the use ``opb`` program::
 
 
-| $ ``sudo opbctl cfg server=<server> channel=<channel> nick=<nick>``
-| $ ``sudo opbctl pwd <nickservnick> <nickservpass>``
-| $ ``sudo opbctl cfg password=<outputfrompwd>``
-| $ ``sudo opbctl cfg users=True``
-| $ ``sudo opbctl met <userhost>``
-| $ ``sudo opbctl rss <url>``
-|
+$ ``sudo opbctl cfg server=<server> channel=<channel> nick=<nick>``
+$ ``sudo opbctl pwd <nickservnick> <nickservpass>``
+$ ``sudo opbctl cfg password=<outputfrompwd>``
+$ ``sudo opbctl cfg users=True``
+$ ``sudo opbctl met <userhost>``
+$ ``sudo opbctl rss <url>``
+
 
 **AUTHOR**
 
