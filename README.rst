@@ -46,46 +46,45 @@ channel. It can do some logging of txt and take note of things todo.
 configuration is done by calling the ``cfg`` command of ``opb``
 
 
- **irc**
+IRC
 
- ::
+::
 
-  $ opb cfg server=<server> channel=<channel> nick=<nick>
+ $ opb cfg server=<server> channel=<channel> nick=<nick>
 
-  (*) default channel/server is #opb on localhost
-
-
- **sasl**
-
- ::
-
-  $ opb pwd <nickservnick> <nickservpass>
-  $ opb cfg password=<outputfrompwd>
+ (*) default channel/server is #opb on localhost
 
 
- **users**
+SASL
 
- as default the user's userhost is not checked when a user types a command in a
- channel. To enable userhost checking enable users with the ``cfg`` command::
+::
 
-  $ opb cfg users=True
-
-
- To add a user to the bot use the met command::
-
-  $ opb met <userhost>
-
- to delete a user use the del command with a substring of the userhost::
-
-  $ opb del <substring>
+ $ opb pwd <nickservnick> <nickservpass>
+ $ opb cfg password=<outputfrompwd>
 
 
- **rss**
+USERS
+
+as default the user's userhost is not checked when a user types a command in a
+channel. To enable userhost checking enable users with the ``cfg`` command::
+
+ $ opb cfg users=True
 
 
- ::
+To add a user to the bot use the met command::
 
-  $ opb rss <url>
+ $ opb met <userhost>
+
+to delete a user use the del command with a substring of the userhost::
+
+ $ opb del <substring>
+
+
+RSS
+
+::
+
+ $ opb rss <url>
 
 
 
