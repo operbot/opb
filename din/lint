@@ -38,5 +38,5 @@ def loop(path, txt):
 
 
 if __name__ == "__main__":
-    os.popen("fin/clean").readlines()
+    os.popen("din/clean").readlines()
     loop(os.getcwd(), f"pylint {LINT}")

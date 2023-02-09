@@ -13,10 +13,10 @@ sys.path.insert(0, os.getcwd())
 from opb import Default, Handler, Storage, privileges, scan, wait
 
 
-from opb.modules import cmd, irc, rss
-
-
 import opb.modules
+
+
+from opb.modules import cmd, irc, rss
 
 
 Cfg = Default()
@@ -54,7 +54,7 @@ def waiter():
 
 
 def main():
-    daemon()
+    #daemon()
     privileges(Cfg.name)
     irc.init()
     rss.init()

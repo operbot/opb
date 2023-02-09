@@ -5,8 +5,9 @@ README
 **NAME**
 
 
-| ``OPB`` - object programming bot.
 
+| ``OPB`` - object programming bot.
+|
 
 **SYNOPSIS**
 
@@ -52,7 +53,7 @@ channel. It can do some logging of txt and take note of things todo.
 
 | ``opb cfg server=<server> channel=<channel> nick=<nick>``
 |
-| (*) default channel/server is #opb on localhost
+| ``(*) default channel/server is #opb on localhost``
 |
 
 
@@ -239,7 +240,7 @@ use ``opbctl`` instead of the use ``opb`` program
 | $ ``sudo opbctl cfg users=True``
 | $ ``sudo opbctl met <userhost>``
 | $ ``sudo opbctl rss <url>``
-
+|
 
 **AUTHOR**
 

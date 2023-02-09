@@ -39,10 +39,10 @@ setup(
     long_description=read(),
     long_description_content_type="text/x-rst",
     license="Public Domain",
-    packages=["opb"],
+    packages=["opb", "opb.modules"],
     include_package_data=True,
     data_files=[
-                ("opb", ["files/opb.service",]),
+                ("opb", ["opb.service",]),
                 ("share/doc/opb", ["README.rst"])
                ],
     scripts=[

@@ -3,8 +3,8 @@ Description=object programming bot
 After=multi-user.target
 
 [Service]
-Type=simple
-User=opb
+#Type=forking
+KillMode=mixed
 Group=opb
 DynamicUser=yes
 StateDirectory=opb

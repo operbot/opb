@@ -2,9 +2,6 @@
 # This file is placed in the Public Domain.
 
 
-"all"
-
-
 import os
 import time
 
@@ -57,20 +54,18 @@ def popen(txt):
         print(line.strip())
 
 
-print("FIN started at %s" % time.ctime(time.time()).replace("  ", " "))
+print("DIN started at %s" % time.ctime(time.time()).replace("  ", " "))
 print("running in %s" % os.getcwd())
 print("\ncleaning")
-popen("fin/clean")
+popen("din/clean")
 print("\ntesting")
-popen("fin/test")
-print("\nbuilding")
+popen("din/test")
 print("\nlinting")
-popen("fin/lint")
-popen("fin/build")
+popen("din/lint")
+print("\nbuilding")
+popen("din/build")
 print("\ncreating environment")
-popen("fin/env")
-#print("\ncreating docs")
-#popen("fin/docs")
+popen("din/env")
 print("\nTWINING")
 popen("twine check dist/*")
 print("\ndone %s" % elapsed(time.time() - starttime))

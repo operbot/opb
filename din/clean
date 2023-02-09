@@ -2,9 +2,6 @@
 # This file is placed in the Public Domain.
 
 
-"cleanup"
-
-
 import os
 
 
@@ -25,9 +22,10 @@ def main():
     popen("rm -fR build dist MANIFEST *.egg-info")
     popen("rm -fR  __pycache__ *~")
     popen("rm -fR .test")
-    popen("fin/loop . rm -fR \*~")
-    popen("fin/loop . rm -fR __pycache__")
+    popen("din/loop . rm -fR \*~")
+    popen("din/loop . rm -fR __pycache__")
+    if os.path.exists("cin/clean"):
+        popen("din/clean")
 
 
-if __name__ == "__main__":
-    main()
+main()
