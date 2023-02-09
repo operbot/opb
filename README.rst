@@ -211,15 +211,7 @@ by enabling it with ``--now``::
  (*) default channel/server is #opb on localhost
 
 
-use ``opbctl`` instead of the use ``opb`` program::
-
-
- $ sudo opbctl cfg server=<server> channel=<channel> nick=<nick>``
- $ sudo opbctl pwd <nickservnick> <nickservpass>``
- $ sudo opbctl cfg password=<outputfrompwd>``
- $ sudo opbctl cfg users=True``
- $ sudo opbctl met <userhost>``
- $ sudo opbctl rss <url>``
+use ``opbctl`` instead of the use ``opb`` program.
 
 
 **AUTHOR**
