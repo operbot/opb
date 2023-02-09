@@ -19,10 +19,7 @@ from .utility import *
 
 def __dir__():
     return (
-            'Command',
-            'Default',
             'Object',
-            'Message',
             'dump',
             'format',
             'items',
