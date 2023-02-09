@@ -12,25 +12,24 @@ README
 
 ::
 
-opb [<cmd>|-c|-d] [key=value] [key==value]
+ opb [<cmd>|-c|-d] [key=value] [key==value]
 
 
 **DESCRIPTION**
 
-
-``OPB`` is a bot, intended to be programmable, with a client program to
+**OPB** is a bot, intended to be programmable, with a client program to
 develop modules on and a systemd version with code included to run a 24/7
 presence in a channel. 
 
 
-``OPB`` stores it's data on disk where objects are time versioned and the
+**OPB** stores it's data on disk where objects are time versioned and the
 last version saved on disk is served to the user layer. Files are JSON dumps
 that are read-only so thus should provide (disk) persistence. Paths carry the
 type in the path name what makes reconstruction from filename easier then
 reading type from the object.
 
 
-``OPB`` has some functionality, mostly feeding RSS feeds into a irc
+**OPB** has some functionality, mostly feeding RSS feeds into a irc
 channel. It can do some logging of txt and take note of things todo.
 
 
@@ -38,7 +37,7 @@ channel. It can do some logging of txt and take note of things todo.
 
 ::
 
- pip3 install opb
+ $ sudo pip3 install opb
 
 
 **CONFIGURATION**
@@ -51,7 +50,7 @@ configuration is done by calling the ``cfg`` command of ``opb``
 
 ::
 
- opb cfg server=<server> channel=<channel> nick=<nick>
+ $ opb cfg server=<server> channel=<channel> nick=<nick>
 
  (*) default channel/server is #opb on localhost
 
@@ -60,9 +59,8 @@ configuration is done by calling the ``cfg`` command of ``opb``
 
 ::
 
- opb pwd <nickservnick> <nickservpass>``
- opb cfg password=<outputfrompwd>``
-
+ $ opb pwd <nickservnick> <nickservpass>
+ $ opb cfg password=<outputfrompwd>
 
 
 **users**
@@ -71,29 +69,26 @@ configuration is done by calling the ``cfg`` command of ``opb``
 as default the user's userhost is not checked when a user types a command in a
 channel. To enable userhost checking enable users with the ``cfg`` command::
 
- opb cfg users=True
+ $ opb cfg users=True
 
 
 To add a user to the bot use the met command::
 
-
- opb met <userhost>
+ $ opb met <userhost>
 
 
 
 to delete a user use the del command with a substring of the userhost::
 
-
- opb del <substring>
-
+ $ opb del <substring>
 
 
 **rss**
 
+
 ::
 
-
- opb rss <url>
+ $ opb rss <url>
 
 
 
@@ -110,16 +105,15 @@ without any arguments ``opb`` doesn't respond, add arguments to have
 ``opb`` execute a command::
 
 
-$ opb
-$
+ $ opb
+ $
 
 
 the ``cmd`` command shows you a list of available commands::
 
 
-$ opb cmd
-cfg,cmd,dlt,dpl,flt,fnd,ftc,met,krn,mre,nme,pwd,rem,rss,thr,upt
-
+ $ opb cmd
+ cfg,cmd,dlt,dpl,flt,fnd,ftc,met,krn,mre,nme,pwd,rem,rss,thr,upt
 
 
 **console**
@@ -127,17 +121,17 @@ cfg,cmd,dlt,dpl,flt,fnd,ftc,met,krn,mre,nme,pwd,rem,rss,thr,upt
 
 use the -c option to start the bot as a console::
 
-$ opb -c 
-OPB started at Fri Jan 6 01:49:58 2023
-> cmd
-cmd,dlt,dpl,flt,ftc,krn,log,met,mre,nme,pwd,rem,rss,thr,upt
->
+ $ opb -c 
+ OPB started at Fri Jan 6 01:49:58 2023
+ > cmd
+ cmd,dlt,dpl,flt,ftc,krn,log,met,mre,nme,pwd,rem,rss,thr,upt
+ >
 
 
 running the bot in the background is done with the -d option::
 
-$ opb -d
-$
+ $ opb -d
+ $
 
 
 **COMMANDS**
@@ -145,26 +139,26 @@ $
 
 here is a short description of the commands::
 
-cfg - show the irc configuration, also edits the config
-cmd - show all commands
-dlt - remove a user
-dne - flag todo as done
-dpl - set display items for a rss feed
-flt - show a list of bot registered to the bus
-fnd - allow you to display objects on the datastore, read-only json files on disk 
-ftc - run a rss feed fetching batch
-krn - kernel
-log - log some text
-met - add a users with there irc userhost
-mre - displays cached output, channel wise.
-nme - set name of a rss feed
-pwd - combine a nickserv name/password into a sasl password
-rem - remove a rss feed by matching is to its url
-rss - add a feed to fetch, fetcher runs every 5 minutes
-thr - show the running threads
-tdo - adds a todo item, no options returns list of todo's
-upt - show uptime
-ver - show version
+ cfg - show the irc configuration, also edits the config
+ cmd - show all commands
+ dlt - remove a user
+ dne - flag todo as done
+ dpl - set display items for a rss feed
+ flt - show a list of bot registered to the bus
+ fnd - allow you to display objects on the datastore, read-only json files on disk 
+ ftc - run a rss feed fetching batch
+ krn - kernel
+ log - log some text
+ met - add a users with there irc userhost
+ mre - displays cached output, channel wise.
+ nme - set name of a rss feed
+ pwd - combine a nickserv name/password into a sasl password
+ rem - remove a rss feed by matching is to its url
+ rss - add a feed to fetch, fetcher runs every 5 minutes
+ thr - show the running threads
+ tdo - adds a todo item, no options returns list of todo's
+ upt - show uptime
+ ver - show version
 
 
 **PROGRAMMING**
