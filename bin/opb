@@ -20,6 +20,9 @@ from opb import launch, privileges, scan, update, wait
 from opb.modules import cmd, fnd, irc, log, rss
 
 
+import opb.modules
+
+
 Cfg = Default()
 Cfg.name = "opb"
 

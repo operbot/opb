@@ -10,11 +10,20 @@ import traceback
 sys.path.insert(0, os.getcwd())
 
 
-from opb import Cfg, Handler, Storage, privileges, scan, wait
+from opb import Default, Handler, Storage, privileges, scan, wait
+
+
 from opb.modules import cmd, irc, rss
 
 
-Storage.workdir = "/var/lib/opb/"
+import opb.modules
+
+
+Cfg = Default()
+Cfg.name = "opb"
+
+
+Storage.workdir = "/var/lib/%s/" % Cfg.name
 
 
 scan(cmd)
@@ -46,7 +55,7 @@ def waiter():
 
 def main():
     daemon()
-    #privileges("opb")
+    privileges(Cfg.name)
     irc.init()
     rss.init()
     wait(waiter)
