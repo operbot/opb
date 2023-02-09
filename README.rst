@@ -205,7 +205,8 @@ to run the bot after reboot, install the service file and start the service
 by enabling it with ``--now``::
 
 
- $ sudo systemctl enable /usr/local/opb/opb.service  --now
+ $ sudo cp /usr/local/opb/opb.service /etc/systemd/system
+ $ sudo systemctl enable opb  --now
 
  (*) default channel/server is #opb on localhost
 
