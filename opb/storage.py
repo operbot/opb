@@ -1,14 +1,11 @@
 # This file is placed in the Public Domain.
 
 
-import json
 import os
-import _thread
 
 
 from .objects import Object, items, kind, oid, search, update
-from .objects import ObjectDecoder, ObjectEncoder
-from .utility import cdir, fnclass, fntime, locked
+from .utility import fnclass, fntime
 
 
 def __dir__():
@@ -27,8 +24,6 @@ class NoClass(Exception):
     pass
 
 
-disklock = _thread.allocate_lock()
-
 class Storage:
 
     cls = Object()
@@ -42,6 +37,7 @@ class Storage:
     def files(oname=None):
         res = []
         path = Storage.path("")
+        print(path)
         if not os.path.exists(path):
             return res
         for fnm in os.listdir(path):
@@ -49,6 +45,7 @@ class Storage:
                 continue
             if fnm not in res:
                 res.append(fnm)
+        print(res)
         return res
 
     @staticmethod
@@ -90,13 +87,14 @@ class Storage:
         return obj
 
     @staticmethod
-    def path(pth=""):
-        return os.path.join(Storage.workdir, "store", pth)
+    def path(path=""):
+        return os.path.join(Storage.workdir, "store", path)
 
     @staticmethod
     def types(oname=None):
         for name, _typ in items(Storage.cls):
             if oname and oname in name.split(".")[-1].lower():
+                print(name)
                 yield name
 
     @staticmethod
@@ -107,22 +105,13 @@ class Storage:
 Storage.add(Object)
 
 
-@locked(disklock)
+@locked
 def dump(obj, opath):
-    opath = os.path.abspath(opath)
     cdir(opath)
     with open(opath, "w", encoding="utf-8") as ofile:
         json.dump(
             obj.__dict__, ofile, cls=ObjectEncoder, indent=4, sort_keys=True
         )
-    return opath
-
-
-@locked(disklock)
-def load(obj, opath):
-    with open(opath, "r", encoding="utf-8") as ofile:
-        res = json.load(ofile, cls=ObjectDecoder)
-        update(obj, res)
     return opath
 
 
@@ -134,6 +123,13 @@ def last(obj, selector=None):
         _fn, ooo = result[-1]
         if ooo:
             update(obj, ooo)
+
+@locked(disklock)
+def load(obj, opath):
+    with open(opath, "r", encoding="utf-8") as ofile:
+        res = json.load(ofile, cls=ObjectDecoder)
+        update(obj, res)
+    return opath
 
 
 def save(obj):
