@@ -1,15 +1,10 @@
 # This file is placed in the Public Domain.
 
 
-"database"
-
-
 import os
 
 
-from .decoder import load
-from .encoder import dump
-from .objects import Object, items, kind, oid, search, update
+from .objects import Object, dump, items, kind, load, oid, search, update
 from .utility import fnclass, fntime
 
 
@@ -28,6 +23,7 @@ class NoClass(Exception):
 
     pass
 
+
 class Storage:
 
     cls = Object()
@@ -40,7 +36,8 @@ class Storage:
     @staticmethod
     def files(oname=None):
         res = []
-        path = Storage.path()
+        path = Storage.path("")
+        print(path)
         if not os.path.exists(path):
             return res
         for fnm in os.listdir(path):
@@ -48,6 +45,7 @@ class Storage:
                 continue
             if fnm not in res:
                 res.append(fnm)
+        print(res)
         return res
 
     @staticmethod
@@ -83,7 +81,6 @@ class Storage:
         fqn = fnclass(otp)
         cls = getattr(Storage.cls, fqn, None)
         if not cls:
-            print(Storage.cls)
             raise NoClass(fqn)
         obj = cls()
         load(obj, otp)
@@ -97,6 +94,7 @@ class Storage:
     def types(oname=None):
         for name, _typ in items(Storage.cls):
             if oname and oname in name.split(".")[-1].lower():
+                print(name)
                 yield name
 
     @staticmethod

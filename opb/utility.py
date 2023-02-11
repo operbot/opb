@@ -1,15 +1,11 @@
 # This file is placed in the Public Domain.
 
 
-"utility"
-
-
 import getpass
 import os
 import pwd
 import pathlib
 import time
-import types
 
 
 def __dir__():
@@ -19,7 +15,6 @@ def __dir__():
             'fnclass',
             'fntime',
             'locked',
-            'name',
             'privileges',
             'spl',
             'wait'
@@ -123,21 +118,6 @@ def locked(lock):
         return lockedfunc
 
     return lockeddec
-
-
-def name(obj):
-    typ = type(obj)
-    if isinstance(typ, types.ModuleType):
-        return obj.__name__
-    if "__self__" in dir(obj):
-        return "%s.%s" % (obj.__self__.__class__.__name__, obj.__name__)
-    if "__class__" in dir(obj) and "__name__" in dir(obj):
-        return "%s.%s" % (obj.__class__.__name__, obj.__name__)
-    if "__class__" in dir(obj):
-        return obj.__class__.__name__
-    if "__name__" in dir(obj):
-        return "%s.%s" % (obj.__class__.__name__, obj.__name__)
-    return None
 
 
 def privileges(username):

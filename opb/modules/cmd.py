@@ -5,8 +5,9 @@ import threading
 import time
 
 
-from .. import Handler, Listens, Object
-from .. import elapsed, name, update
+from ..objects import Object, name, update
+from ..handler import Handler, Listens
+from ..utility import elapsed
 
 
 def __dir__():

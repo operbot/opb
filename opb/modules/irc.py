@@ -13,9 +13,11 @@ import threading
 import _thread
 
 
-from .. import Default, Handler, Message, Object, Storage
-from .. import elapsed, format, keys, fntime, last, locked, save, update
-from .. import launch
+from ..objects import Default, Object, format, keys, update
+from ..utility import elapsed, fntime, locked
+from ..handler import Event, Handler
+from ..runtime import launch
+from ..storage import Storage, last, save
 
 
 def __dir__():
@@ -37,7 +39,6 @@ def __dir__():
 __all__ = __dir__()
 
 
-name = "operbot"
 saylock = _thread.allocate_lock()
 
 
@@ -54,17 +55,17 @@ class NoUser(Exception):
 
 class Config(Default):
 
-    channel = "#opb"
+    channel = "#operbot"
     control = "!"
-    nick =  "opb"
+    nick = "operbot"
     password = ""
     port = 6667
-    realname = name
+    realname = "operator bot"
     sasl = False
     server = "localhost"
-    servermodes = "opb"
+    servermodes = ""
     sleep = 60
-    username = "opb"
+    username = "operbot"
     users = False
 
     def __init__(self):
@@ -82,12 +83,6 @@ class Config(Default):
         self.username = Config.username
         self.users = Config.users
 
-
-class Event(Message):
-
-    def __init__(self):
-        Message.__init__(self)
-        self.type = "event"
 
 
 class TextWrap(textwrap.TextWrapper):
@@ -456,7 +451,7 @@ class IRC(Handler, Output):
             event.txt = " ".join(splitted)
             event.type = "command"
             event.orig = repr(self)
-            Handler.dispatch(self, event)
+            self.dispatch(event)
 
     def quit(self, event):
         if event.orig and event.orig in self.zelf:
@@ -600,8 +595,10 @@ def cfg(event):
                               )
     else:
         update(config, event.sets)
+        print(config)
         save(config)
-        event.done()
+        print("yo!")
+        event.reply("ok")
 
 
 def dlt(event):
@@ -612,7 +609,7 @@ def dlt(event):
     for obj in Storage.find("user", selector):
         obj.__deleted__ = True
         save(obj)
-        event.done()
+        event.reply("ok")
         break
 
 
@@ -634,7 +631,7 @@ def met(event):
     user.user = event.rest
     user.perms = ["USER"]
     save(user)
-    event.done()
+    event.reply("ok")
 
 
 def mre(event):

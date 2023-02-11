@@ -14,22 +14,22 @@ from urllib.parse import quote_plus, urlencode
 from urllib.request import Request, urlopen
 
 
-from .. import dump
-from .. import Object, format, update
-from .. import Storage, last, save
-from .. import elapsed, fntime, locked
-from .. import Listens
-from .. import launch
-from .. import Repeater
-from .. import spl
+from ..objects import Object, dump, format, name, update
+from ..utility import fntime, locked
+from ..handler import Listens
+from ..runtime import launch
+from ..storage import Storage, last, save
+from ..utility import elapsed, spl
 
 
 def __dir__():
     return (
         "Feed",
         "Fetcher",
+        "Repeater",
         "Rss",
         "Seen",
+        "Timer",
         "debug",
         "init",
         "dpl",
@@ -138,9 +138,9 @@ class Fetcher(Object):
         if objs:
             save(Fetcher.seen)
         txt = ""
-        name = getattr(feed, "name")
-        if name:
-            txt = "[%s] " % name
+        feedname = getattr(feed, "name")
+        if feedname:
+            txt = "[%s] " % feedname
         for obj in objs:
             txt2 = txt + self.display(obj)
             Listens.announce(txt2.rstrip())
@@ -187,6 +187,47 @@ class Parser(Object):
                 setattr(obj, itm, Parser.getitem(line, itm))
             res.append(obj)
         return res
+
+
+class Timer:
+
+    def __init__(self, sleep, func, *args, thrname=None):
+        super().__init__()
+        self.args = args
+        self.func = func
+        self.sleep = sleep
+        self.name = thrname or name(self.func)
+        self.state = Object
+        self.timer = None
+
+    def run(self):
+        self.state.latest = time.time()
+        launch(self.func, *self.args)
+
+    def start(self):
+        timer = threading.Timer(self.sleep, self.run)
+        timer.name = self.name
+        timer.daemon = True
+        timer.sleep = self.sleep
+        timer.state = self.state
+        timer.state.starttime = time.time()
+        timer.state.latest = time.time()
+        timer.func = self.func
+        timer.start()
+        self.timer = timer
+        return timer
+
+    def stop(self):
+        if self.timer:
+            self.timer.cancel()
+
+
+class Repeater(Timer):
+
+    def run(self):
+        thr = launch(self.start)
+        super().run()
+        return thr
 
 
 def getfeed(url, item):
@@ -250,7 +291,7 @@ def dpl(event):
         if feed:
             update(feed, setter)
             dump(feed, fnm)
-    event.done()
+    event.reply("ok")
 
 
 def ftc(event):
@@ -264,8 +305,7 @@ def ftc(event):
     if res:
         event.reply(",".join([str(x) for x in res if x]))
         return
-    else:
-        event.reply("no threads joined")
+
 
 def nme(event):
     if len(event.args) != 2:
@@ -276,7 +316,7 @@ def nme(event):
         if feed:
             feed.name = event.args[1]
             dump(feed, fnm)
-    event.done()
+    event.reply("ok")
 
 
 def rem(event):
@@ -288,7 +328,7 @@ def rem(event):
         if feed:
             feed.__deleted__ = True
             dump(feed, fnm)
-    event.done()
+    event.reply("ok")
 
 
 def rss(event):
@@ -298,7 +338,7 @@ def rss(event):
             event.reply("%s %s %s" % (
                                    nrs,
                                    format(feed),
-                                   elapsed(time.time()-fntime(fnm))
+                                   elapsed(fntime(fnm))
                                   )
                        )
             nrs += 1
@@ -316,4 +356,4 @@ def rss(event):
     feed = Rss()
     feed.rss = event.args[0]
     save(feed)
-    event.done()
+    event.reply("ok")
