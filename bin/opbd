@@ -2,32 +2,29 @@
 # This file is placed in the Public Domain.
 
 
+"object programming bot daemon"
+
+
 import os
 import sys
+import termios
+import time
 import traceback
 
 
 sys.path.insert(0, os.getcwd())
 
 
-from opb import Default, Handler, Storage, privileges, scan, wait
-
-
-import opb.modules
-
-
-from opb.modules import cmd, irc, rss
+from opb.objects import Default, update
+from opb.handler import Event, Handler
+from opb.modules import cmd, fnd, irc, rss
+from opb.runtime import launch
+from opb.storage import Storage
+from opb.utility import wait
 
 
 Cfg = Default()
-Cfg.name = "opb"
-
-
-Storage.workdir = "/var/lib/%s/" % Cfg.name
-
-
-scan(cmd)
-scan(rss)
+Storage.workdir = os.path.expanduser("~/.opb")
 
 
 def daemon():
@@ -54,9 +51,11 @@ def waiter():
 
 
 def main():
-    #daemon()
-    privileges(Cfg.name)
-    irc.init()
+    daemon()
+    thr = launch(irc.init)
+    bot = thr.join()
+    bot.scan(cmd)
+    bot.scan(rss)
     rss.init()
     wait(waiter)
 

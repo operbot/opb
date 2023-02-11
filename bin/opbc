@@ -2,8 +2,10 @@
 # This file is placed in the Public Domain.
 
 
+"object programming bot"
+
+
 import os
-import readline
 import sys
 import termios
 import time
@@ -13,28 +15,21 @@ import traceback
 sys.path.insert(0, os.getcwd())
 
 
-from opb import Command, Default, Handler, Parsed, Storage
-from opb import launch, privileges, scan, update, wait
-
-
-from opb.modules import cmd, fnd, irc, log, rss
+from opb.objects import Default, update
+from opb.handler import Event, Handler
+from opb.modules import cmd, fnd, irc, rss
+from opb.storage import Storage
 
 
 Cfg = Default()
-
-
-Storage.workdir = "/var/lib/opb/"
-
-
-scan(cmd)
-scan(fnd)
-scan(irc)
-scan(log)
-scan(rss)
+Storage.workdir = os.path.expanduser("~/.opb")
 
 
 class CLI(Handler):
 
+    def __init__(self):
+        Handler.__init__(self)
+        self.register("command", self.dispatch)
 
     def announce(self, txt):
         pass
@@ -44,19 +39,26 @@ class CLI(Handler):
         sys.stdout.flush()
 
 
+def wrap(func):
+    try:
+        func()
+    except (EOFError, KeyboardInterrupt):
+        print("")
+    finally:
+        for ex in Handler.errors:
+            traceback.print_exception(type(ex), ex, ex.__traceback__)
+
+
 def main():
-    privileges(Cfg.name)
-    p = Parsed()
-    p.parse(" ".join(sys.argv[1:]))
-    update(Cfg, p)
-    e = Command()
+    e = Event()
     e.type = "command"
-    e.txt = Cfg.otxt
-    e.parse(e.txt)
+    e.parse(" ".join(sys.argv[1:]))
     cli = CLI()
-    cli.start()
-    cli.put(e)
-    e.wait()
+    cli.scan(cmd)
+    cli.scan(fnd)
+    cli.scan(irc)
+    cli.scan(rss)
+    cli.handle(e)
 
 
-main()
+wrap(main)
