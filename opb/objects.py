@@ -94,7 +94,6 @@ class ObjectEncoder(json.JSONEncoder):
             return str(o)
 
 
-
 class Default(Object):
 
     __slots__ = ("__default__",)
@@ -105,16 +104,6 @@ class Default(Object):
 
     def __getattr__(self, key):
         return self.__dict__.get(key, self.__default__)
-
-
-@locked
-def dump(obj, opath):
-    cdir(opath)
-    with open(opath, "w", encoding="utf-8") as ofile:
-        json.dump(
-            obj.__dict__, ofile, cls=ObjectEncoder, indent=4, sort_keys=True
-        )
-    return opath
 
 
 def dumps(obj):
@@ -172,12 +161,13 @@ def kind(obj):
         kin = obj.__name__
     return kin
 
-@locked
+#@locked
 def load(obj, opath):
     with open(opath, "r", encoding="utf-8") as ofile:
         res = json.load(ofile, cls=ObjectDecoder)
         update(obj, res)
-
+    return opath
+        
 
 def loads(jsonstr):
     return json.loads(jsonstr, cls=ObjectDecoder)

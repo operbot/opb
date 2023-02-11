@@ -8,6 +8,7 @@ from . import handler, objects, runtime, storage, utility
 
 
 from .objects import *
+from .storage import *
 
 
 def __dir__():

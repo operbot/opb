@@ -6,10 +6,10 @@ import os
 import unittest
 
 
-from opb.decoder import ObjectDecoder, load, loads
-from opb.encoder import ObjectEncoder, dump, dumps
+from opb.objects import ObjectDecoder, loads
+from opb.objects import ObjectEncoder, dumps
 from opb.objects import Object, oid
-from opb.storage import Storage
+from opb.storage import Storage, dump, load
 
 
 VALIDJSON = '{"test": "bla"}'
@@ -33,5 +33,7 @@ class TestEncoder(unittest.TestCase):
         obj.key = "value"
         pld = dump(obj, Storage.path(oid(obj)))
         oobj = Object()
-        load(oobj, pld)
+        pth = Storage.path(pld)
+        print(pth)
+        load(oobj, pth)
         self.assertEqual(oobj.key, "value")

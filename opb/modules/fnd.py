@@ -16,7 +16,6 @@ __all__ = __dir__()
 
 
 def fnd(event):
-    print(event)
     if not event.args:
         res = ",".join(sorted([x.split(".")[-1].lower() for x in Storage.files()]))
         print(Storage.workdir, Storage.files())
@@ -33,7 +32,6 @@ def fnd(event):
     if len(event.args) > 1:
         keyz += "," + ",".join(event.args[1:])
     for path, obj in Storage.find(otype, event.gets):
-        print(path)
         if not keyz:
             keyz = "," + ",".join(keys(obj))
         txt = "%s %s %s" % (

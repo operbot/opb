@@ -14,11 +14,11 @@ from urllib.parse import quote_plus, urlencode
 from urllib.request import Request, urlopen
 
 
-from ..objects import Object, dump, format, name, update
+from ..objects import Object, format, name, update
 from ..utility import fntime, locked
 from ..handler import Listens
 from ..runtime import launch
-from ..storage import Storage, last, save
+from ..storage import Storage, dump, last, save
 from ..utility import elapsed, spl
 
 

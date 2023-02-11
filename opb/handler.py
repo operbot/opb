@@ -6,7 +6,7 @@ import queue
 import threading
 
 
-from .objects import Default, Object, name, register, update
+from .objects import Default, Object, register, update
 from .runtime import launch
 
 
@@ -14,7 +14,7 @@ def __dir__():
     return (
             "Event",
             "Handler",
-            "scan"
+            "Listens"
            ) 
 
 
@@ -25,7 +25,7 @@ class Handler(Object):
 
     cmds = Object()
     errors = []
-    threaded = True
+    threaded = False
 
     def __init__(self):
         Object.__init__(self)

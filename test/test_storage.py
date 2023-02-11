@@ -94,4 +94,5 @@ class TestStorage(unittest.TestCase):
         Storage.workdir = ".test"
         obj = Object()
         path = save(obj)
+        print(path)
         self.assertTrue(os.path.exists(os.path.join(Storage.workdir, "store", path)))

@@ -113,8 +113,8 @@ def locked(lock):
                 lock.release()
             return res
 
-        lockedfunc.__wrapped__ = func
-        lockedfunc.__doc__ = func.__doc__
+        lockeddec.__wrapped__ = func
+        lockeddec.__doc__ = func.__doc__
         return lockedfunc
 
     return lockeddec
