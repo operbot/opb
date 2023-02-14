@@ -1,7 +1,7 @@
 # This file is placed in the Public Domain.
 
 
-"object programming version"
+"Big Object"
 
 
 import datetime
@@ -9,23 +9,20 @@ import os
 import json
 import types
 import uuid
-import _thread
-
-
-from .utility import locked
 
 
 def __dir__():
     return (
-            'Default',
             'Object',
+            'dumps',
             'format',
             'get',
             'items',
             'keys',
             'kind',
-            'oid',
+            'loads',
             'name',
+            'oid',
             'register',
             'search',
             'update',
@@ -34,9 +31,6 @@ def __dir__():
 
 
 __all__ = __dir__()
-
-
-lock = _thread.allocate_lock()
 
 
 class Object:
@@ -92,6 +86,7 @@ class ObjectEncoder(json.JSONEncoder):
             return json.JSONEncoder.default(self, o)
         except TypeError:
             return str(o)
+
 
 
 class Default(Object):
@@ -161,13 +156,6 @@ def kind(obj):
         kin = obj.__name__
     return kin
 
-#@locked
-def load(obj, opath):
-    with open(opath, "r", encoding="utf-8") as ofile:
-        res = json.load(ofile, cls=ObjectDecoder)
-        update(obj, res)
-    return opath
-        
 
 def loads(jsonstr):
     return json.loads(jsonstr, cls=ObjectDecoder)

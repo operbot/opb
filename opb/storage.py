@@ -2,10 +2,11 @@
 
 
 import os
+import _thread
 
 
 from .objects import Object, items, kind, oid, search, update
-from .utility import fnclass, fntime
+from .utility import fnclass, fntime, locked
 
 
 def __dir__():
@@ -17,6 +18,9 @@ def __dir__():
 
 
 __all__ = __dir__()
+
+
+disklock = _thread.allocate_lock()
 
 
 class NoClass(Exception):
