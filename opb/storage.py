@@ -6,8 +6,8 @@ import json
 import _thread
 
 
-from .decoder import ObjectDecoder
-from .encoder import ObjectEncoder
+from .decoder import load
+from .encoder import dump
 from .objects import Object, items, kind, oid, search, update
 from .utility import cdir, fnclass, fntime, locked
 
@@ -21,9 +21,6 @@ def __dir__():
 
 
 __all__ = __dir__()
-
-
-disklock = _thread.allocate_lock()
 
 
 class NoClass(Exception):
@@ -88,12 +85,31 @@ class Storage:
         if not cls:
             raise NoClass(fqn)
         obj = cls()
-        load(obj, otp)
+        with open(otp, "r") as ofile:
+            dct = load(ofile)
+            update(obj, dct)
         return obj
+
+    @staticmethod
+    def last(obj, selector=None):
+        if selector is None:
+            selector = {}
+        result = sorted(Storage.find(kind(obj), selector), key=lambda x: fntime(x[0]))
+        if result:
+            _fn, ooo = result[-1]
+            if ooo:
+                update(obj, ooo)
 
     @staticmethod
     def path(path=""):
         return os.path.join(Storage.workdir, "store", path)
+
+    @staticmethod
+    def save(obj):
+        opath = Storage.path(oid(obj))
+        with open(opath, "w") as ofile:
+            dump(obj, ofile)
+        return opath
 
     @staticmethod
     def types(oname=None):
@@ -107,36 +123,3 @@ class Storage:
 
 
 Storage.add(Object)
-
-
-@locked(disklock)
-def dump(obj, opath):
-    cdir(opath)
-    with open(opath, "w", encoding="utf-8") as ofile:
-        json.dump(
-            obj.__dict__, ofile, cls=ObjectEncoder, indent=4, sort_keys=True
-        )
-    return os.path.abspath(opath)
-
-
-def last(obj, selector=None):
-    if selector is None:
-        selector = {}
-    result = sorted(Storage.find(kind(obj), selector), key=lambda x: fntime(x[0]))
-    if result:
-        _fn, ooo = result[-1]
-        if ooo:
-            update(obj, ooo)
-
-@locked(disklock)
-def load(obj, opath):
-    with open(opath, "r", encoding="utf-8") as ofile:
-        res = json.load(ofile, cls=ObjectDecoder)
-        update(obj, res)
-    return opath
-
-
-def save(obj):
-    opath = Storage.path(oid(obj))
-    dump(obj, opath)
-    return opath

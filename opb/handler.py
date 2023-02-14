@@ -34,6 +34,11 @@ class Handler(Object):
         register(self.cbs, "command", self.dispatch)
         Listens.add(self)
 
+
+    @staticmethod
+    def add(cmd):
+        setattr(Handler.cmds, cmd.__name__, cmd)
+
     def clone(self, other):
         update(self.cmds, other.cmds)
 

@@ -18,7 +18,7 @@ from ..objects import Object, format, name, update
 from ..utility import fntime, locked
 from ..handler import Listens
 from ..runtime import launch
-from ..storage import Storage, dump, last, save
+from ..storage import Storage
 from ..utility import elapsed, spl
 
 
@@ -133,10 +133,10 @@ class Fetcher(Object):
                 Fetcher.seen.urls.append(uurl)
             counter += 1
             if self.dosave:
-                save(fed)
+                Storage.save(fed)
             objs.append(fed)
         if objs:
-            save(Fetcher.seen)
+            Storage.save(Fetcher.seen)
         txt = ""
         feedname = getattr(feed, "name")
         if feedname:
@@ -153,7 +153,7 @@ class Fetcher(Object):
         return thrs
 
     def start(self, repeat=True):
-        last(Fetcher.seen)
+        Storage.last(Fetcher.seen)
         if repeat:
             repeater = Repeater(300.0, self.run)
             repeater.start()
@@ -290,7 +290,7 @@ def dpl(event):
     for fnm, feed in Storage.find("rss", {"rss": event.args[0]}):
         if feed:
             update(feed, setter)
-            dump(feed, fnm)
+            Storage.dump(feed, fnm)
     event.reply("ok")
 
 
@@ -315,7 +315,7 @@ def nme(event):
     for fnm, feed in Storage.find("rss", selector):
         if feed:
             feed.name = event.args[1]
-            dump(feed, fnm)
+            Storage.dump(feed, fnm)
     event.reply("ok")
 
 
@@ -327,7 +327,7 @@ def rem(event):
     for fnm, feed in Storage.find("rss", selector):
         if feed:
             feed.__deleted__ = True
-            dump(feed, fnm)
+            Storage.dump(feed, fnm)
     event.reply("ok")
 
 
@@ -355,5 +355,5 @@ def rss(event):
             return
     feed = Rss()
     feed.rss = event.args[0]
-    save(feed)
+    Storage.save(feed)
     event.reply("ok")

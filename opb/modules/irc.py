@@ -19,7 +19,7 @@ from ..message import Message
 from ..utility import elapsed, fntime, locked
 from ..handler import Handler
 from ..runtime import launch
-from ..storage import Storage, last, save
+from ..storage import Storage
 
 
 def __dir__():
@@ -505,7 +505,7 @@ class IRC(Handler, Output):
     def start(self):
         assert self.cfg.nick
         assert self.cfg.server
-        last(self.cfg)
+        Storage.last(self.cfg)
         if self.cfg.channel not in self.channels:
             self.channels.append(self.cfg.channel)
         self.connected.clear()
@@ -546,7 +546,7 @@ class Users(Object):
         for user in Users.get_users(origin):
             try:
                 user.perms.remove(perm)
-                save(user)
+                Storage.save(user)
                 res = True
             except ValueError:
                 pass
@@ -572,7 +572,7 @@ class Users(Object):
             raise NoUser(origin)
         if permission.upper() not in user.perms:
             user.perms.append(permission.upper())
-            save(user)
+            Storage.save(user)
         return user
 
 
@@ -588,7 +588,7 @@ class User(Object):
 
 def cfg(event):
     config = Config()
-    last(config)
+    Storage.last(config)
     if not event.sets:
         event.reply(format(
                                config,
@@ -597,7 +597,7 @@ def cfg(event):
                               )
     else:
         update(config, event.sets)
-        save(config)
+        Storage.save(config)
         event.reply("ok")
 
 
@@ -608,7 +608,7 @@ def dlt(event):
     selector = {"user": event.args[0]}
     for obj in Storage.find("user", selector):
         obj.__deleted__ = True
-        save(obj)
+        Storage.save(obj)
         event.reply("ok")
         break
 
@@ -630,7 +630,7 @@ def met(event):
     user = User()
     user.user = event.rest
     user.perms = ["USER"]
-    save(user)
+    Storage.save(user)
     event.reply("ok")
 
 

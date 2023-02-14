@@ -19,7 +19,7 @@ from opb.default import Default
 from opb.message import Message
 from opb.objects import update
 from opb.handler import Handler
-from opb.modules import cmd, fnd, irc, rss
+from opb.modules import cmd, fnd, irc, rss, tdo
 from opb.runtime import launch
 from opb.storage import Storage
 from opb.utility import wait
@@ -90,6 +90,7 @@ def main():
     cli.scan(fnd)
     cli.scan(irc)
     cli.scan(rss)
+    cli.scan(tdo)
     if e.txt:
         cli.handle(e)
     elif "c" in e.opts:
