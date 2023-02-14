@@ -105,8 +105,10 @@ class Storage:
         return os.path.join(Storage.workdir, "store", path)
 
     @staticmethod
-    def save(obj):
-        opath = Storage.path(oid(obj))
+    def save(obj, opath=None):
+        if not opath:
+            opath = Storage.path(oid(obj))
+        cdir(opath)
         with open(opath, "w") as ofile:
             dump(obj, ofile)
         return opath

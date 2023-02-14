@@ -24,9 +24,9 @@ def dne(event):
     if not event.args:
         return
     selector = {"txt": event.args[0]}
-    for _fn, o in Storage.find("todo", selector):
-        o._deleted = True
-        Storage.save(o)
+    for fnm, o in Storage.find("todo", selector):
+        o.__deleted__ = True
+        Storage.save(o, fnm)
         event.reply("ok")
         break
 
