@@ -18,7 +18,6 @@ __all__ = __dir__()
 def fnd(event):
     if not event.args:
         res = ",".join(sorted([x.split(".")[-1].lower() for x in Storage.files()]))
-        print(Storage.workdir, Storage.files())
         if res:
             event.reply(res)
         else:

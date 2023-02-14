@@ -6,7 +6,6 @@
 
 import datetime
 import os
-import json
 import types
 import uuid
 
@@ -14,13 +13,11 @@ import uuid
 def __dir__():
     return (
             'Object',
-            'dumps',
             'format',
             'get',
             'items',
             'keys',
             'kind',
-            'loads',
             'name',
             'oid',
             'register',
@@ -58,51 +55,6 @@ class Object:
     def __str__(self):
         return str(self.__dict__)
 
-
-class ObjectDecoder(json.JSONDecoder):
-
-
-    def decode(self, s, _w=None):
-        value = json.loads(s)
-        return Object(value)
-
-
-class ObjectEncoder(json.JSONEncoder):
-
-
-    def default(self, o):
-        if isinstance(o, dict):
-            return o.items()
-        if isinstance(o, Object):
-            return vars(o)
-        if isinstance(o, list):
-            return iter(o)
-        if isinstance(o,
-                      (type(str), type(True), type(False),
-                       type(int), type(float))
-                     ):
-            return str(o)
-        try:
-            return json.JSONEncoder.default(self, o)
-        except TypeError:
-            return str(o)
-
-
-
-class Default(Object):
-
-    __slots__ = ("__default__",)
-
-    def __init__(self):
-        Object.__init__(self)
-        self.__default__ = ""
-
-    def __getattr__(self, key):
-        return self.__dict__.get(key, self.__default__)
-
-
-def dumps(obj):
-    return json.dumps(obj, cls=ObjectEncoder)
 
 
 def format(obj, args="", skip="", plain=False):
@@ -155,10 +107,6 @@ def kind(obj):
     if kin == "type":
         kin = obj.__name__
     return kin
-
-
-def loads(jsonstr):
-    return json.loads(jsonstr, cls=ObjectDecoder)
 
 
 def name(obj):

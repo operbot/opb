@@ -10,9 +10,6 @@ from opb.objects import Object
 from opb.storage import Storage, save
 
 
-import opb.storage
-
-
 Storage.workdir = ".test"
 
 
@@ -75,8 +72,9 @@ class TestStorage(unittest.TestCase):
         self.assertTrue("Storage" in str(type(clz)))
 
     def test_dirmodule(self):
+        from opb import storage
         self.assertEqual(
-                         dir(opb.storage),
+                         dir(storage),
                          list(ATTRS1)
                         )
 
@@ -87,12 +85,8 @@ class TestStorage(unittest.TestCase):
                          list(ATTRS2)
                         )
 
-    def test_module(self):
-        self.assertTrue(Storage().__module__, "opb.storage")
-
     def test_save(self):
         Storage.workdir = ".test"
         obj = Object()
-        path = save(obj)
-        print(path)
-        self.assertTrue(os.path.exists(os.path.join(Storage.workdir, "store", path)))
+        opath = save(obj)
+        self.assertTrue(os.path.exists(opath))

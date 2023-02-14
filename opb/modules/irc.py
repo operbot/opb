@@ -13,9 +13,11 @@ import threading
 import _thread
 
 
-from ..objects import Default, Object, format, keys, update
+from ..default import Default
+from ..objects import Object, format, keys, update
+from ..message import Message
 from ..utility import elapsed, fntime, locked
-from ..handler import Event, Handler
+from ..handler import Handler
 from ..runtime import launch
 from ..storage import Storage, last, save
 
@@ -368,7 +370,7 @@ class IRC(Handler, Output):
         rawstr = str(txt)
         rawstr = rawstr.replace("\u0001", "")
         rawstr = rawstr.replace("\001", "")
-        obj = Event()
+        obj = Message()
         obj.rawstr = rawstr
         obj.command = ""
         obj.arguments = []
@@ -429,7 +431,7 @@ class IRC(Handler, Output):
             except (socket.timeout, ConnectionResetError) as ex:
                 self.joined.clear()
                 time.sleep(5.0)
-                evt = Event()
+                evt = Message()
                 evt.txt = str(ex)
                 evt.type = "ERROR"
                 evt.orig = repr(self)
@@ -595,9 +597,7 @@ def cfg(event):
                               )
     else:
         update(config, event.sets)
-        print(config)
         save(config)
-        print("yo!")
         event.reply("ok")
 
 

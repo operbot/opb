@@ -15,14 +15,18 @@ import traceback
 sys.path.insert(0, os.getcwd())
 
 
-from opb.objects import Default, update
-from opb.handler import Event, Handler
+from opb.default import Default
+from opb.message import Message
+from opb.objects import update
+from opb.handler import Handler
 from opb.modules import cmd, fnd, irc, rss
+from opb.runtime import launch
 from opb.storage import Storage
+from opb.utility import wait
 
 
 Cfg = Default()
-Storage.workdir = os.path.expanduser("~/.opv")
+Storage.workdir = os.path.expanduser("~/.opb")
 
 
 class CLI(Handler):
@@ -46,7 +50,7 @@ class Console(CLI):
         #event.wait()
 
     def poll(self):
-        event = Event()
+        event = Message()
         event.txt = input("> ")
         return event
 
@@ -78,7 +82,7 @@ def wrap(func):
 
 
 def main():
-    e = Event()
+    e = Message()
     e.type = "command"
     e.parse(" ".join(sys.argv[1:]))
     cli = CLI()
@@ -95,7 +99,8 @@ def main():
         rss.init()
         csl = Console()
         csl.clone(cli)
-        csl.start()
+        launch(csl.start)
+        wait(waiter)
 
 
 wrap(main)

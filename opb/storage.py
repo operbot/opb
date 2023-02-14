@@ -2,11 +2,14 @@
 
 
 import os
+import json
 import _thread
 
 
+from .decoder import ObjectDecoder
+from .encoder import ObjectEncoder
 from .objects import Object, items, kind, oid, search, update
-from .utility import fnclass, fntime, locked
+from .utility import cdir, fnclass, fntime, locked
 
 
 def __dir__():
@@ -41,7 +44,6 @@ class Storage:
     def files(oname=None):
         res = []
         path = Storage.path("")
-        print(path)
         if not os.path.exists(path):
             return res
         for fnm in os.listdir(path):
@@ -49,7 +51,6 @@ class Storage:
                 continue
             if fnm not in res:
                 res.append(fnm)
-        print(res)
         return res
 
     @staticmethod
@@ -98,7 +99,6 @@ class Storage:
     def types(oname=None):
         for name, _typ in items(Storage.cls):
             if oname and oname in name.split(".")[-1].lower():
-                print(name)
                 yield name
 
     @staticmethod
@@ -109,14 +109,14 @@ class Storage:
 Storage.add(Object)
 
 
-@locked
+@locked(disklock)
 def dump(obj, opath):
     cdir(opath)
     with open(opath, "w", encoding="utf-8") as ofile:
         json.dump(
             obj.__dict__, ofile, cls=ObjectEncoder, indent=4, sort_keys=True
         )
-    return opath
+    return os.path.abspath(opath)
 
 
 def last(obj, selector=None):
@@ -139,4 +139,4 @@ def load(obj, opath):
 def save(obj):
     opath = Storage.path(oid(obj))
     dump(obj, opath)
-    return Storage.strip(opath)
+    return opath
