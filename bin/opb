@@ -13,9 +13,6 @@ import time
 import traceback
 
 
-sys.path.insert(0, os.getcwd())
-
-
 from opv.default import Default
 from opv.objects import update
 from opr.listens import Listens
