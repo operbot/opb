@@ -4,10 +4,10 @@
 import time
 
 
-from ..handler import Handler
-from ..objects import Object
-from ..storage import Storage
-from ..utility import elapsed, fntime
+from opr.handler import Handler
+from opr.storage import Storage
+from opr.utility import elapsed, fntime
+from opv.objects import Object
 
 
 class Todo(Object):
@@ -31,9 +31,6 @@ def dne(event):
         break
 
 
-Handler.add(dne)
-
-
 def tdo(event):
     if not event.rest:
         nr = 0
@@ -47,6 +44,3 @@ def tdo(event):
     o.txt = event.rest
     Storage.save(o)
     event.reply("ok")
-
-
-Handler.add(tdo)

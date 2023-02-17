@@ -13,13 +13,13 @@ import threading
 import _thread
 
 
-from ..default import Default
-from ..objects import Object, format, keys, update
-from ..message import Message
-from ..utility import elapsed, fntime, locked
-from ..handler import Handler
-from ..runtime import launch
-from ..storage import Storage
+from opv.default import Default
+from opv.objects import Object, format, keys, update
+from opr.message import Message
+from opr.utility import elapsed, fntime, locked
+from opr.handler import Handler, dispatch
+from opr.threads import launch
+from opr.storage import Storage
 
 
 def __dir__():
@@ -57,17 +57,17 @@ class NoUser(Exception):
 
 class Config(Default):
 
-    channel = "#operbot"
+    channel = "#opb"
     control = "!"
-    nick = "operbot"
+    nick = "opb"
     password = ""
     port = 6667
-    realname = "operator bot"
+    realname = "object programming bot"
     sasl = False
     server = "localhost"
     servermodes = ""
     sleep = 60
-    username = "operbot"
+    username = "opb"
     users = False
 
     def __init__(self):
@@ -453,7 +453,7 @@ class IRC(Handler, Output):
             event.txt = " ".join(splitted)
             event.type = "command"
             event.orig = repr(self)
-            self.dispatch(event)
+            dispatch(event)
 
     def quit(self, event):
         if event.orig and event.orig in self.zelf:

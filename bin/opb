@@ -2,10 +2,11 @@
 # This file is placed in the Public Domain.
 
 
-"object programming bot"
+"operator bot"
 
 
 import os
+import readline
 import sys
 import termios
 import time
@@ -15,25 +16,32 @@ import traceback
 sys.path.insert(0, os.getcwd())
 
 
-from opb.default import Default
-from opb.message import Message
-from opb.objects import update
-from opb.handler import Handler
-from opb.modules import cmd, fnd, irc, rss, tdo
-from opb.runtime import launch
-from opb.storage import Storage
-from opb.utility import wait
+from opv.default import Default
+from opv.objects import update
+from opr.listens import Listens
+from opr.message import Message
+from opr.handler import Handler, command, dispatch, scan
+from opr.storage import Storage
+from opr.threads import launch
+from opr.utility import wait
+from opb.modules import cmd, fnd, irc, log, opt, rss, tdo, usr
 
 
 Cfg = Default()
 Storage.workdir = os.path.expanduser("~/.opb")
 
 
-class CLI(Handler):
+scan(cmd)
+scan(fnd)
+scan(irc)
+scan(log)
+scan(opt)
+scan(rss)
+scan(tdo)
+scan(usr)
 
-    def __init__(self):
-        Handler.__init__(self)
-        self.register("command", self.dispatch)
+
+class CLI(Handler):
 
     def announce(self, txt):
         pass
@@ -46,11 +54,12 @@ class CLI(Handler):
 class Console(CLI):
 
     def handle(self, event):
-        self.dispatch(event)
-        #event.wait()
+        CLI.handle(self, event)
+        event.wait()
 
     def poll(self):
         event = Message()
+        event.orig = repr(self)
         event.txt = input("> ")
         return event
 
@@ -86,21 +95,15 @@ def main():
     e.type = "command"
     e.parse(" ".join(sys.argv[1:]))
     cli = CLI()
-    cli.scan(cmd)
-    cli.scan(fnd)
-    cli.scan(irc)
-    cli.scan(rss)
-    cli.scan(tdo)
     if e.txt:
-        cli.handle(e)
+        command(cli, e.otxt)
     elif "c" in e.opts:
         date = time.ctime(time.time()).replace("  ", " ")
         print(f"OPB started {date}")
         irc.init()
         rss.init()
         csl = Console()
-        csl.clone(cli)
-        launch(csl.start)
+        csl.start()
         wait(waiter)
 
 
