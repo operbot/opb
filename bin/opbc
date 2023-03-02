@@ -2,63 +2,53 @@
 # This file is placed in the Public Domain.
 
 
-"object programming bot"
+"command"
 
 
+import importlib
 import os
+import readline
 import sys
 import termios
 import time
-import traceback
 
 
-sys.path.insert(0, os.getcwd())
+sys.path.insert(0, ".")
 
 
-from opb.objects import Default, update
-from opb.handler import Event, Handler
-from opb.modules import cmd, fnd, irc, rss
+from opb.clients import Client
 from opb.storage import Storage
+from opb.threads import launch
 
 
-Cfg = Default()
+import opb.modules
+
+
 Storage.workdir = os.path.expanduser("~/.opb")
 
 
-class CLI(Handler):
-
-    def __init__(self):
-        Handler.__init__(self)
-        self.register("command", self.dispatch)
-
-    def announce(self, txt):
-        pass
+class CLI(Client):
 
     def raw(self, txt):
         print(txt)
         sys.stdout.flush()
 
-
-def wrap(func):
-    try:
-        func()
-    except (EOFError, KeyboardInterrupt):
-        print("")
-    finally:
-        for ex in Handler.errors:
-            traceback.print_exception(type(ex), ex, ex.__traceback__)
+    def scan(self):
+        path = opb.modules.__path__[0]
+        for fnm in os.listdir(path):
+            try:
+                mod = importlib.import_module("." + fnm[:-3], "opb.modules")
+            except ModuleNotFoundError:
+               continue
+            Client.scan(self, mod)
+            if "init" in dir(mod):
+                launch(mod.init)
 
 
 def main():
-    e = Event()
-    e.type = "command"
-    e.parse(" ".join(sys.argv[1:]))
-    cli = CLI()
-    cli.scan(cmd)
-    cli.scan(fnd)
-    cli.scan(irc)
-    cli.scan(rss)
-    cli.handle(e)
+    csl = CLI()
+    csl.scan()
+    return csl.one(" ".join(sys.argv[1:]))
 
 
-wrap(main)
+main()

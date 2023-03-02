@@ -266,7 +266,6 @@ class IRC(Client, Output):
         self.sock.shutdown(2)
 
     def dispatch(self, event):
-        print(event)
         cmd = getattr(self.cmds, event.cmd, None)
         if cmd:
             cmd(event)
@@ -457,6 +456,7 @@ class IRC(Client, Output):
                 return
             msg = Message(event)
             msg.parse(event.txt)
+            msg.type = "command"
             msg.command = msg.cmd
             self.dispatch(msg)
 

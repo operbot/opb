@@ -2,7 +2,7 @@
 # This file is placed in the Public Domain.
 
 
-"object programming bot"
+"bot"
 
 
 import importlib
@@ -17,6 +17,7 @@ sys.path.insert(0, ".")
 
 
 from opb.clients import Client
+from opb.modules import irc, rss
 from opb.storage import Storage
 from opb.threads import launch
 
@@ -39,28 +40,21 @@ class Console(Client):
     def scan(self):
         path = opb.modules.__path__[0]
         for fnm in os.listdir(path):
-            try:
-                mod = importlib.import_module("." + fnm[:-3], "opb.modules")
-            except ModuleNotFoundError:
-               continue
+            if not fnm.endswith(".py"):
+                continue
+            if "__" in fnm:
+                continue
+            mod = importlib.import_module("." + fnm[:-3], "opb.modules")
             Client.scan(self, mod)
-            if "init" in dir(mod):
-                bot = mod.init()
-                bot.clone(self)
-
-    def wait(self):
-        while 1:
-            time.sleep(1.0)
 
 
 def main():
-    csl = Console()
-    csl.scan()
-    txt = " ".join(sys.argv[1:])
-    if txt:
-        return csl.one(txt)
     date = time.ctime(time.time()).replace("  ", " ")
     print(f"OPB started {date}")
+    csl = Console()
+    csl.scan()
+    irc.init()
+    rss.init()
     csl.loop()
 
 

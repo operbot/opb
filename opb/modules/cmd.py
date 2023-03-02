@@ -5,6 +5,7 @@ import threading
 import time
 
 
+from ..command import Command
 from ..objects import Object, oid, update
 from ..handler import Handler, Listens
 from ..utility import elapsed
@@ -26,8 +27,7 @@ starttime = time.time()
 
 
 def cmd(event):
-    bot = Listens.byorig(event.orig)
-    event.reply(",".join(sorted(bot.cmds)))
+    event.reply(",".join(sorted(Command.cmds)))
 
 
 def flt(event):
