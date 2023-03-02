@@ -5,9 +5,9 @@ import threading
 import time
 
 
-from opv.objects import Object, name, update
-from opr.handler import Handler, Listens
-from opr.utility import elapsed
+from ..objects import Object, oid, update
+from ..handler import Handler, Listens
+from ..utility import elapsed
 
 
 def __dir__():
@@ -22,12 +22,12 @@ def __dir__():
 __all__ = __dir__()
 
 
-
 starttime = time.time()
 
 
 def cmd(event):
-    event.reply(",".join(sorted(Handler.cmds)))
+    bot = Listens.byorig(event.orig)
+    event.reply(",".join(sorted(bot.cmds)))
 
 
 def flt(event):
@@ -37,7 +37,7 @@ def flt(event):
         return
     except (KeyError, TypeError, IndexError, ValueError):
         pass
-    event.reply(" | ".join([name(o) for o in Listens.objs]))
+    event.reply(" | ".join([oid(o) for o in Listens.objs]))
 
 
 def thr(event):

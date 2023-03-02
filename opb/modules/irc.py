@@ -13,13 +13,13 @@ import threading
 import _thread
 
 
-from opv.default import Default
-from opv.objects import Object, format, keys, update
-from opr.message import Message
-from opr.utility import elapsed, fntime, locked
-from opr.handler import Handler, dispatch
-from opr.threads import launch
-from opr.storage import Storage
+from ..clients import Client
+from ..default import Default
+from ..objects import Object, keys, tostr, update
+from ..message import Message
+from ..utility import elapsed, fntime, locked
+from ..threads import launch
+from ..storage import Storage
 
 
 def __dir__():
@@ -84,7 +84,6 @@ class Config(Default):
         self.sleep = Config.sleep
         self.username = Config.username
         self.users = Config.users
-
 
 
 class TextWrap(textwrap.TextWrapper):
@@ -167,10 +166,10 @@ class Output(Object):
         self.oqueue.put_nowait((None, None))
 
 
-class IRC(Handler, Output):
+class IRC(Client, Output):
 
     def __init__(self):
-        Handler.__init__(self)
+        Client.__init__(self)
         Output.__init__(self)
         self.buffer = []
         self.cfg = Config()
@@ -201,6 +200,8 @@ class IRC(Handler, Output):
         self.register("NOTICE", self.notice)
         self.register("PRIVMSG", self.privmsg)
         self.register("QUIT", self.quit)
+        self.register("command", self.dispatch)
+        self.target = "type"
 
     def announce(self, txt):
         for channel in self.channels:
@@ -263,6 +264,12 @@ class IRC(Handler, Output):
 
     def disconnect(self):
         self.sock.shutdown(2)
+
+    def dispatch(self, event):
+        print(event)
+        cmd = getattr(self.cmds, event.cmd, None)
+        if cmd:
+            cmd(event)
 
     def doconnect(self, server, nck, port=6667):
         while 1:
@@ -336,7 +343,8 @@ class IRC(Handler, Output):
             time.sleep(10.0)
             if self.state.pongcheck:
                 self.keeprunning = False
-                self.restart()
+                self.stopped.set()
+                self.loop()
 
     def logon(self, server, nck):
         assert server
@@ -418,9 +426,9 @@ class IRC(Handler, Output):
         spl = obj.txt.split()
         if len(spl) > 1:
             obj.args = spl[1:]
-        obj.type = obj.command
         obj.orig = repr(self)
         obj.txt = obj.txt.strip()
+        obj.type = obj.command 
         return obj
 
     def poll(self):
@@ -433,7 +441,6 @@ class IRC(Handler, Output):
                 time.sleep(5.0)
                 evt = Message()
                 evt.txt = str(ex)
-                evt.type = "ERROR"
                 evt.orig = repr(self)
                 return evt
         return self.event(self.buffer.pop(0))
@@ -448,12 +455,10 @@ class IRC(Handler, Output):
                 return
             if self.cfg.users and not Users.allowed(event.origin, "USER"):
                 return
-            splitted = event.txt.split()
-            splitted[0] = splitted[0].lower()
-            event.txt = " ".join(splitted)
-            event.type = "command"
-            event.orig = repr(self)
-            dispatch(event)
+            msg = Message(event)
+            msg.parse(event.txt)
+            msg.command = msg.cmd
+            self.dispatch(msg)
 
     def quit(self, event):
         if event.orig and event.orig in self.zelf:
@@ -510,8 +515,7 @@ class IRC(Handler, Output):
             self.channels.append(self.cfg.channel)
         self.connected.clear()
         self.joined.clear()
-        Output.start(self)
-        launch(Handler.start, self)
+        launch(Client.start, self)
         launch(
                self.doconnect,
                self.cfg.server,
@@ -526,7 +530,7 @@ class IRC(Handler, Output):
             self.sock.shutdown(2)
         except OSError:
             pass
-        Handler.stop(self)
+        Client.stop(self)
 
 
 class Users(Object):
@@ -590,11 +594,11 @@ def cfg(event):
     config = Config()
     Storage.last(config)
     if not event.sets:
-        event.reply(format(
-                               config,
-                               keys(config),
-                               skip="control,password,realname,sleep,username")
-                              )
+        event.reply(tostr(
+                          config,
+                          keys(config),
+                          skip="control,password,realname,sleep,username")
+                         )
     else:
         update(config, event.sets)
         Storage.save(config)

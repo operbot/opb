@@ -1,9 +1,9 @@
 # This file is placed in the Public Domain.
 
 
-from opv.objects import format, keys
-from opr.storage import Storage
-from opr.utility import elapsed, fntime
+from ..objects import keys, tostr
+from ..storage import Storage
+from ..utility import elapsed, fntime
 
 
 def __dir__():
@@ -35,7 +35,7 @@ def fnd(event):
             keyz = "," + ",".join(keys(obj))
         txt = "%s %s %s" % (
                          str(nmr),
-                         format(obj, keyz),
+                         tostr(obj, keyz),
                          elapsed(fntime(path))
                         )
         nmr += 1

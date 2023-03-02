@@ -14,12 +14,12 @@ from urllib.parse import quote_plus, urlencode
 from urllib.request import Request, urlopen
 
 
-from opv.objects import Object, format, name, update
-from opr.utility import fntime, locked
-from opr.handler import Listens
-from opr.threads import launch
-from opr.storage import Storage
-from opr.utility import elapsed, spl
+from ..objects import Object, kind, tostr, update
+from ..utility import fntime, locked
+from ..handler import Listens
+from ..threads import launch
+from ..storage import Storage
+from ..utility import elapsed, spl
 
 
 def __dir__():
@@ -92,6 +92,9 @@ class Fetcher(Object):
     def __init__(self):
         super().__init__()
         self.connected = threading.Event()
+
+    def clone(self, other):
+        pass
 
     @staticmethod
     def display(obj):
@@ -196,8 +199,8 @@ class Timer:
         self.args = args
         self.func = func
         self.sleep = sleep
-        self.name = thrname or name(self.func)
-        self.state = Object
+        self.name = thrname or kind(self.func, True)
+        self.state = Object()
         self.timer = None
 
     def run(self):
@@ -337,7 +340,7 @@ def rss(event):
         for fnm, feed in Storage.find("rss"):
             event.reply("%s %s %s" % (
                                    nrs,
-                                   format(feed),
+                                   tostr(feed),
                                    elapsed(fntime(fnm))
                                   )
                        )

@@ -4,10 +4,10 @@
 import time
 
 
-from opr.handler import Handler
-from opr.storage import Storage
-from opr.utility import elapsed, fntime
-from opv.objects import Object
+from ..handler import Handler
+from ..storage import Storage
+from ..utility import elapsed, fntime
+from ..objects import Object
 
 
 class Todo(Object):

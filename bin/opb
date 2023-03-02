@@ -2,106 +2,70 @@
 # This file is placed in the Public Domain.
 
 
-"operator bot"
+"object programming bot"
 
 
+import importlib
 import os
 import readline
 import sys
 import termios
 import time
-import traceback
 
 
-from opv.default import Default
-from opv.objects import update
-from opr.listens import Listens
-from opr.message import Message
-from opr.handler import Handler, command, dispatch, scan
-from opr.storage import Storage
-from opr.threads import launch
-from opr.utility import wait
-from opb.modules import cmd, fnd, irc, log, opt, rss, tdo, usr
+sys.path.insert(0, ".")
 
 
-Cfg = Default()
+from opb.clients import Client
+from opb.storage import Storage
+from opb.threads import launch
+
+
+import opb.modules
+
+
 Storage.workdir = os.path.expanduser("~/.opb")
 
 
-scan(cmd)
-scan(fnd)
-scan(irc)
-scan(log)
-scan(opt)
-scan(rss)
-scan(tdo)
-scan(usr)
-
-
-class CLI(Handler):
-
-    def announce(self, txt):
-        pass
+class Console(Client):
 
     def raw(self, txt):
         print(txt)
         sys.stdout.flush()
 
-
-class Console(CLI):
-
-    def handle(self, event):
-        CLI.handle(self, event)
-        event.wait()
-
     def poll(self):
-        event = Message()
-        event.orig = repr(self)
-        event.txt = input("> ")
-        return event
+        return self.event(input("> "))
 
+    def scan(self):
+        path = opb.modules.__path__[0]
+        for fnm in os.listdir(path):
+            try:
+                mod = importlib.import_module("." + fnm[:-3], "opb.modules")
+            except ModuleNotFoundError:
+               continue
+            Client.scan(self, mod)
+            if "init" in dir(mod):
+                bot = mod.init()
+                bot.clone(self)
 
-def waiter():
-    got = []
-    for ex in Handler.errors:
-        traceback.print_exception(type(ex), ex, ex.__traceback__)
-        got.append(ex)
-    for exc in got:
-        Handler.errors.remove(exc)
-
-
-def wrap(func):
-    fds = sys.stdin.fileno()
-    gotterm = True
-    try:
-        old = termios.tcgetattr(fds)
-    except termios.error:
-        gotterm = False
-    try:
-        func()
-    except (EOFError, KeyboardInterrupt):
-        print("")
-    finally:
-        if gotterm:
-            termios.tcsetattr(fds, termios.TCSADRAIN, old)
-        waiter()
+    def wait(self):
+        while 1:
+            time.sleep(1.0)
 
 
 def main():
-    e = Message()
-    e.type = "command"
-    e.parse(" ".join(sys.argv[1:]))
-    cli = CLI()
-    if e.txt:
-        command(cli, e.otxt)
-    elif "c" in e.opts:
-        date = time.ctime(time.time()).replace("  ", " ")
-        print(f"OPB started {date}")
-        irc.init()
-        rss.init()
-        csl = Console()
-        csl.start()
-        wait(waiter)
+    csl = Console()
+    csl.scan()
+    txt = " ".join(sys.argv[1:])
+    if txt:
+        return csl.one(txt)
+    date = time.ctime(time.time()).replace("  ", " ")
+    print(f"OPB started {date}")
+    csl.loop()
 
 
-wrap(main)
+if __name__ == "__main__":
+    try:
+        main()
+    except (EOFError, KeyboardInterrupt):
+        print("")

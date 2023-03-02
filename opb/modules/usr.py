@@ -4,9 +4,9 @@
 import time
 
 
-from opv.objects import Object, update
-from opr.storage import Storage
-from opr.utility import elapsed, fntime
+from ..objects import Object, update
+from ..storage import Storage
+from ..utility import elapsed, fntime
 
 
 def __dir__():
