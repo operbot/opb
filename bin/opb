@@ -16,6 +16,7 @@ import time
 sys.path.insert(0, ".")
 
 
+from opb.command import scan
 from opb.clients import Client
 from opb.modules import irc, rss
 from opb.storage import Storage
@@ -45,7 +46,9 @@ class Console(Client):
             if "__" in fnm:
                 continue
             mod = importlib.import_module("." + fnm[:-3], "opb.modules")
-            Client.scan(self, mod)
+            scan(mod)
+            if "init" in dir(mod):
+                mod.init()
 
 
 def main():
@@ -53,8 +56,6 @@ def main():
     print(f"OPB started {date}")
     csl = Console()
     csl.scan()
-    irc.init()
-    rss.init()
     csl.loop()
 
 

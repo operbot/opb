@@ -3,7 +3,7 @@
 
 from .default import Default
 from .listens import Listens
-from .objects import Object
+from .objects import Object, tostr
 
 
 def __dir__():
@@ -19,17 +19,20 @@ class Message(Default):
 
     def __init__(self, *args, **kwargs):
         Default.__init__(self, *args, **kwargs)      
+        self.args = []
         self.result = []
+        self.txt = ""
         self.type = "cmd"
 
     def parse(self, txt):
-        if not txt:
-            return self
         splitted = txt.split()
-        self.cmd = splitted.pop(0)
-        self.selector = Object(zip({tuple(x.split("==")) for x in splitted if "==" in x}))
-        self.args = list({x for x in splitted if "==" not in x})
-        self.rest = " ".join(self.args)
+        if splitted:
+            self.cmd = splitted.pop(0)
+        if splitted:
+            self.args = list({x for x in splitted if "==" not in x})
+            x = Object()
+            self.gets = Object({x.split("==") for x in splitted if x and "==" in x[0]})
+            self.rest = " ".join(self.args)
         return self
 
     def reply(self, txt):
@@ -37,4 +40,4 @@ class Message(Default):
 
     def show(self):
         for txt in self.result:
-            Listens.say(self.orig, txt)
+            Listens.say(self.orig, txt, self.channel)

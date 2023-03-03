@@ -16,7 +16,8 @@ def __dir__():
             'fnclass',
             'fntime',
             'locked',
-            'spl'
+            'spl',
+            'wait'
            )
 
 
@@ -126,3 +127,8 @@ def spl(txt):
     except (TypeError, ValueError):
         res = txt
     return [x for x in res if x]
+
+
+def wait(self):
+    while 1:
+        time.sleep(1.0)

@@ -1,10 +1,20 @@
 # This file is placed in the Public Domain.
 
 
+from .command import Command
 from .handler import Handler
 from .listens import Listens
 from .message import Message
 from .threads import launch
+
+
+def __dir__():
+    return (
+            "Client",
+           )
+
+
+__all__ = __dir__()
 
 
 class Client(Handler):
@@ -12,12 +22,14 @@ class Client(Handler):
     def __init__(self):
         Handler.__init__(self)
         Listens.add(self)
-
+        self.register("command", Command.handle)
+     
     def announce(self, txt):
         self.raw(txt)
 
     def event(self, txt):
         msg = Message()
+        msg.type = "command"
         msg.orig = repr(self)
         msg.parse(txt)
         return msg

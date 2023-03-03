@@ -16,7 +16,7 @@ def __dir__():
             'kind',
             'oid',
             'search',
-            'toostr',
+            'tostr',
             'update',
             'values'
             )

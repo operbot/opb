@@ -1,7 +1,6 @@
 # This file is placed in the Public Domain.
 
 
-import inspect
 import queue
 import threading
 
@@ -52,12 +51,3 @@ class Handler(Object):
 
     def register(self, cmd, func):
         setattr(self.cbs, cmd, func)
-
-    def scan(self, mod):
-        for _key, cmd in inspect.getmembers(mod, inspect.isfunction):
-            if "event" in cmd.__code__.co_varnames:
-                setattr(self.cbs, cmd.__name__, cmd)
-
-    def wait(self):
-        while 1:
-            time.sleep(1.0)

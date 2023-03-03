@@ -14,6 +14,7 @@ import _thread
 
 
 from ..clients import Client
+from ..command import Command
 from ..default import Default
 from ..objects import Object, keys, tostr, update
 from ..message import Message
@@ -265,10 +266,9 @@ class IRC(Client, Output):
     def disconnect(self):
         self.sock.shutdown(2)
 
-    def dispatch(self, event):
-        cmd = getattr(self.cmds, event.cmd, None)
-        if cmd:
-            cmd(event)
+    def dispatch(self, evt):
+        evt.orig = repr(self)
+        Command.handle(evt)
 
     def doconnect(self, server, nck, port=6667):
         while 1:
@@ -318,7 +318,6 @@ class IRC(Client, Output):
 
     def fileno(self):
         return self.sock.fileno()
-
 
     def h903(self, event):
         time.sleep(1.0)
@@ -455,9 +454,8 @@ class IRC(Client, Output):
             if self.cfg.users and not Users.allowed(event.origin, "USER"):
                 return
             msg = Message(event)
-            msg.parse(event.txt)
             msg.type = "command"
-            msg.command = msg.cmd
+            msg.parse(event.txt)
             self.dispatch(msg)
 
     def quit(self, event):
@@ -516,6 +514,7 @@ class IRC(Client, Output):
         self.connected.clear()
         self.joined.clear()
         launch(Client.start, self)
+        launch(Output.start, self)
         launch(
                self.doconnect,
                self.cfg.server,

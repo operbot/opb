@@ -25,7 +25,6 @@ class ObjectDecoder(json.JSONDecoder):
         return Object(value)
 
 
-
 @locked(olock)
 def load(fnm, *args, cls=None, object_hook=None, parse_float=None, parse_int=None, parse_constant=None, object_pairs_hook=None, **kw):
     return json.load(
