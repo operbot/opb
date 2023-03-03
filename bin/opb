@@ -31,12 +31,15 @@ Storage.workdir = os.path.expanduser("~/.opb")
 
 class Console(Client):
 
-    def raw(self, txt):
-        print(txt)
-        sys.stdout.flush()
+    def announce(self, txt):
+        pass
 
     def poll(self):
         return self.event(input("> "))
+
+    def raw(self, txt):
+        print(txt)
+        sys.stdout.flush()
 
     def scan(self):
         path = opb.modules.__path__[0]

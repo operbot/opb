@@ -22,6 +22,11 @@ class Listens(Object):
         Listens.objs.append(obj)
 
     @staticmethod
+    def announce(txt):
+        for obj in Listens.objs:
+            obj.announce(txt)
+
+    @staticmethod
     def byorig(orig):
         for obj in Listens.objs:
             if repr(obj) == orig:
