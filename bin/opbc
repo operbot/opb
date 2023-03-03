@@ -17,6 +17,7 @@ sys.path.insert(0, ".")
 
 
 from opb.clients import Client
+from opb.command import Command, scan
 from opb.storage import Storage
 from opb.threads import launch
 
@@ -40,9 +41,7 @@ class CLI(Client):
                 mod = importlib.import_module("." + fnm[:-3], "opb.modules")
             except ModuleNotFoundError:
                continue
-            Client.scan(self, mod)
-            if "init" in dir(mod):
-                launch(mod.init)
+            scan(mod)
 
 
 def main():

@@ -1,11 +1,11 @@
 # This file is placed in the Public Domain.
 
 
+"threads"
+
+
 import queue
 import threading
-
-
-from .objects import kind
 
 
 def __dir__():
@@ -13,9 +13,6 @@ def __dir__():
             "Thread",
             "launch"
            ) 
-
-
-__all__ = __dir__()
 
 
 class Thread(threading.Thread):

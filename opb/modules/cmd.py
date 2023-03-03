@@ -1,6 +1,9 @@
 # This file is placed in the Public Domain.
 
 
+"command"
+
+
 import threading
 import time
 
@@ -18,9 +21,6 @@ def __dir__():
             'thr',
             'upt'
            )
-
-
-__all__ = __dir__()
 
 
 starttime = time.time()

@@ -1,6 +1,9 @@
 # This is placed in the Public Domain.
 
 
+"listens"
+
+
 from .objects import Object
 
 
@@ -8,9 +11,6 @@ def __dir__():
     return (
             'Listens',
            )
-
-
-__all__ = __dir__()
 
 
 class Listens(Object):

@@ -1,6 +1,9 @@
 # This file is placed in the Public Domain.
 
 
+"handler"
+
+
 import queue
 import threading
 
@@ -15,9 +18,6 @@ def __dir__():
     return (
             'Handler',
            )
-
-
-__all__ = __dir__()
 
 
 class Handler(Object):

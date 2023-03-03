@@ -7,23 +7,16 @@
 
 import os
 import sys
-import termios
-import time
-import traceback
 
 
 sys.path.insert(0, os.getcwd())
 
 
-from opb.objects import Default, update
-from opb.handler import Event, Handler
-from opb.modules import cmd, fnd, irc, rss
-from opb.runtime import launch
+from opb.modules import irc, rss
 from opb.storage import Storage
 from opb.utility import wait
 
 
-Cfg = Default()
 Storage.workdir = os.path.expanduser("~/.opb")
 
 
@@ -41,23 +34,11 @@ def daemon():
     os.dup2(ses.fileno(), sys.stderr.fileno())
 
 
-def waiter():
-    got = []
-    for ex in Handler.errors:
-        traceback.print_exception(type(ex), ex, ex.__traceback__)
-        got.append(ex)
-    for exc in got:
-        Handler.errors.remove(exc)
-
-
 def main():
     daemon()
-    thr = launch(irc.init)
-    bot = thr.join()
-    bot.scan(cmd)
-    bot.scan(rss)
+    irc.init()
     rss.init()
-    wait(waiter)
+    wait()
 
 
 main()

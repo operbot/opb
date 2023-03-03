@@ -1,6 +1,9 @@
 # This file is placed in the Public Domain.
 
 
+"message"
+
+
 from .default import Default
 from .listens import Listens
 from .objects import Object, tostr
@@ -10,9 +13,6 @@ def __dir__():
     return (
             'Message',
            )
-
-
-__all__ = __dir__()
 
 
 class Message(Default):

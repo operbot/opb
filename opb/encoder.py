@@ -1,6 +1,9 @@
 # This file is placed in the Public Domain.
 
 
+"encoder"
+
+
 import json
 
 
@@ -14,10 +17,6 @@ def __dir__():
             'dump',
             'dumps'
            ) 
-
-
-__all__ = __dir__()
-
 
 class ObjectEncoder(json.JSONEncoder):
 

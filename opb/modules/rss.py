@@ -1,6 +1,9 @@
 # This file is placed in the Public Domain.
 
 
+"rich site syndicate"
+
+
 import html.parser
 import re
 import threading
@@ -38,10 +41,6 @@ def __dir__():
         "rem",
         "rss"
     )
-
-
-
-__all__ = __dir__()
 
 
 def init():

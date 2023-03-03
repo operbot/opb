@@ -1,6 +1,9 @@
 # This file is placed in the Public Domain.
 
 
+"objects"
+
+
 import datetime
 import os
 import types
@@ -20,9 +23,6 @@ def __dir__():
             'update',
             'values'
             )
-
-
-__all__ = __dir__()
 
 
 olock = _thread.allocate_lock()
@@ -52,38 +52,6 @@ class Object:
 
     def __str__(self):
         return str(self.__dict__)
-
-
-def tostr(obj, args="", skip="", plain=False):
-    res = []
-    keyz = []
-    if "," in args:
-        keyz = args.split(",")
-    if not keyz:
-        keyz = keys(obj)
-    for key in sorted(keyz):
-        if key.startswith("_"):
-            continue
-        if skip:
-            skips = skip.split(",")
-            if key in skips:
-                continue
-        value = getattr(obj, key, None)
-        if not value:
-            continue
-        if " object at " in str(value):
-            continue
-        txt = ""
-        if plain:
-            value = str(value)
-            txt = f'{value}'
-        elif isinstance(value, str) and len(value.split()) >= 2:
-            txt = f'{key}="{value}"'
-        else:
-            txt = f'{key}={value}'
-        res.append(txt)
-    txt = " ".join(res)
-    return txt.strip()
 
 
 def items(obj):
@@ -125,6 +93,38 @@ def search(obj, selector):
             res = True
             break
     return res
+
+
+def tostr(obj, args="", skip="", plain=False):
+    res = []
+    keyz = []
+    if "," in args:
+        keyz = args.split(",")
+    if not keyz:
+        keyz = keys(obj)
+    for key in sorted(keyz):
+        if key.startswith("_"):
+            continue
+        if skip:
+            skips = skip.split(",")
+            if key in skips:
+                continue
+        value = getattr(obj, key, None)
+        if not value:
+            continue
+        if " object at " in str(value):
+            continue
+        txt = ""
+        if plain:
+            value = str(value)
+            txt = f'{value}'
+        elif isinstance(value, str) and len(value.split()) >= 2:
+            txt = f'{key}="{value}"'
+        else:
+            txt = f'{key}={value}'
+        res.append(txt)
+    txt = " ".join(res)
+    return txt.strip()
 
 
 def update(obj, data):

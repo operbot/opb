@@ -1,6 +1,9 @@
 # This file is placed in the Public Domain.
 
 
+"utility"
+
+
 import os
 import pathlib
 import time
@@ -19,9 +22,6 @@ def __dir__():
             'spl',
             'wait'
            )
-
-
-__all__ = __dir__()
 
 
 def cdir(path):

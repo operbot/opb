@@ -1,6 +1,9 @@
 # This file is placed in the Public Domain.
 
 
+"clients"
+
+
 from .command import Command
 from .handler import Handler
 from .listens import Listens
@@ -12,9 +15,6 @@ def __dir__():
     return (
             "Client",
            )
-
-
-__all__ = __dir__()
 
 
 class Client(Handler):

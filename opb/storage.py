@@ -1,6 +1,9 @@
 # This file is placed in the Public Domain.
 
 
+"storage"
+
+
 import os
 
 
@@ -14,9 +17,6 @@ def __dir__():
     return (
             'Storage',
            )
-
-
-__all__ = __dir__()
 
 
 class NoClass(Exception):

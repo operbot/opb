@@ -1,6 +1,9 @@
 # This file is placed in the Public Domain.
 
 
+"internet relay chat"
+
+
 import base64
 import os
 import queue
@@ -37,9 +40,6 @@ def __dir__():
             'mre',
             'pwd'
            )
-
-
-__all__ = __dir__()
 
 
 saylock = _thread.allocate_lock()

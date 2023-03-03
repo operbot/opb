@@ -1,6 +1,9 @@
 # This file is placed in the Public Domain.
 
 
+"find"
+
+
 from ..objects import keys, tostr
 from ..storage import Storage
 from ..utility import elapsed, fntime
@@ -10,9 +13,6 @@ def __dir__():
     return (
             "fnd",
            )
-
-
-__all__ = __dir__()
 
 
 def fnd(event):
