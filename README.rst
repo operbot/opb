@@ -193,7 +193,7 @@ and values.
 
 great for giving objects peristence by having their state stored in files::
 
- >>> from opb.objects import Object, save
+ >>> from opb.objects import Object
  >>> o = Object()
  >>> from opb.storage import Storage
  >>> Storage.save(o)
