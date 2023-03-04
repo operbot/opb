@@ -7,7 +7,6 @@
 import time
 
 
-from ..handler import Handler
 from ..storage import Storage
 from ..utility import elapsed, fntime
 from ..objects import Object

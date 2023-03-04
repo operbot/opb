@@ -31,7 +31,7 @@ def uploadlist(dir):
 
 setup(
     name="opb",
-    version="11",
+    version="10",
     author="B.H.J. Thate",
     author_email="operbot100@gmail.com",
     url="http://github.com/operbot/operbot",
@@ -39,13 +39,7 @@ setup(
     long_description=read(),
     long_description_content_type="text/x-rst",
     license="Public Domain",
-    install_requires=["opv", "opr"],
     packages=["opb", "opb.modules"],
-    include_package_data=True,
-    data_files=[
-                ("opb", ["opb.service",]),
-                ("share/doc/opb", ["README.rst"])
-               ],
     scripts=[
              "bin/opb",
              "bin/opbc",

@@ -9,8 +9,8 @@ import time
 
 
 from ..command import Command
+from ..listens import Listens
 from ..objects import Object, oid, update
-from ..handler import Handler, Listens
 from ..utility import elapsed
 
 

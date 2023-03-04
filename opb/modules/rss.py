@@ -17,9 +17,9 @@ from urllib.parse import quote_plus, urlencode
 from urllib.request import Request, urlopen
 
 
+from ..listens import Listens
 from ..objects import Object, kind, tostr, update
 from ..utility import fntime, locked
-from ..handler import Listens
 from ..threads import launch
 from ..storage import Storage
 from ..utility import elapsed, spl

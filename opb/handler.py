@@ -9,8 +9,6 @@ import threading
 
 
 from .command import Command
-from .default import Default
-from .listens import Listens
 from .objects import Object, update
 
 

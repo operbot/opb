@@ -6,7 +6,6 @@
 
 import datetime
 import os
-import types
 import uuid
 import _thread
 

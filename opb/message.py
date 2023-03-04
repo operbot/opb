@@ -6,7 +6,7 @@
 
 from .default import Default
 from .listens import Listens
-from .objects import Object, tostr
+from .objects import Object
 
 
 def __dir__():
