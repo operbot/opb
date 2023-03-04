@@ -87,6 +87,9 @@ class Config(Default):
         self.users = Config.users
 
 
+Storage.add(Config)
+
+
 class TextWrap(textwrap.TextWrapper):
 
     def __init__(self):
