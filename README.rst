@@ -130,7 +130,7 @@ use the ``opb`` program to start the bot as a console::
  cmd,dlt,dpl,flt,ftc,krn,log,met,mre,nme,pwd,rem,rss,thr,upt
  >
 
-running the bot in the background is done by starting ``opbd``:
+running the bot in the background is done by starting ``opbd``::
 
  $ opbd
  $
