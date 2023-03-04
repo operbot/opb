@@ -17,23 +17,30 @@ README
 
 **DESCRIPTION**
 
-``OPB`` is a bot, intended to be programmable, with a client program to
-develop modules on and a systemd version with code included to run a 24/7
-presence in a channel. 
 
+``opb`` is a IRC bot, intended to be programmable, with a client program (opb),
+command line interface (opbc) and a daemon version (opbd), it provides object
+persistence, an event handler and some basic code to load modules that can
+provide additional functionality.
 
-``OPB`` stores it's data on disk where objects are time versioned and the
+``opb`` uses object programming, object oriented programming without the
+oriented. Object programming is programming where the methods are seperated
+out into functions that use the object as the first argument of that funcion.
+This gives base class definitions a clean namespace to inherit from and to load
+json data into the object's __dict__. A clean namespace prevents a json loaded
+attribute to overwrite any methods.
+
+``opb`` stores it's data on disk where objects are time versioned and the
 last version saved on disk is served to the user layer. Files are JSON dumps
-that are read-only so thus should provide (disk) persistence. Paths carry the
-type in the path name what makes reconstruction from filename easier then
-reading type from the object.
+and paths carry the type in the path name what makes reconstruction from
+filename easier then reading type from the object.
 
-
-``OPB`` has some functionality, mostly feeding RSS feeds into a irc
+``opb`` has some functionality, mostly feeding RSS feeds into a irc
 channel. It can do some logging of txt and take note of things todo.
 
 
 **INSTALL**
+
 
 ::
 
@@ -43,14 +50,14 @@ channel. It can do some logging of txt and take note of things todo.
 **CONFIGURATION**
 
 
-configuration is done by calling the ``cfg`` command of ``opb``
+configuration is done by calling the ``cfg`` command of ``opbc``
 
 
 IRC
 
 ::
 
- $ opb cfg server=<server> channel=<channel> nick=<nick>
+ $ opbc cfg server=<server> channel=<channel> nick=<nick>
 
  (*) default channel/server is #opb on localhost
 
@@ -59,8 +66,8 @@ SASL
 
 ::
 
- $ opb pwd <nickservnick> <nickservpass>
- $ opb cfg password=<outputfrompwd>
+ $ opbc pwd <nickservnick> <nickservpass>
+ $ opbc cfg password=<outputfrompwd>
 
 
 USERS
@@ -68,23 +75,23 @@ USERS
 as default the user's userhost is not checked when a user types a command in a
 channel. To enable userhost checking enable users with the ``cfg`` command::
 
- $ opb cfg users=True
+ $ opbc cfg users=True
 
 
 To add a user to the bot use the met command::
 
- $ opb met <userhost>
+ $ opbc met <userhost>
 
 to delete a user use the del command with a substring of the userhost::
 
- $ opb del <substring>
+ $ opbc del <substring>
 
 
 RSS
 
 ::
 
- $ opb rss <url>
+ $ opbc rss <url>
 
 
 
@@ -97,37 +104,42 @@ this part shows how to run ``opb``.
 **cli**
 
 
-without any arguments ``opb`` doesn't respond, add arguments to have
-``opb`` execute a command::
+without any arguments ``opbc`` doesn't respond, add arguments to have
+``opbc`` execute a command::
 
 
- $ opb
+ $ opbc
  $
 
 
 the ``cmd`` command shows you a list of available commands::
 
 
- $ opb cmd
+ $ opbc cmd
  cfg,cmd,dlt,dpl,flt,fnd,ftc,met,krn,mre,nme,pwd,rem,rss,thr,upt
 
 
 **console**
 
 
-use the -c option to start the bot as a console::
+use the ``opb`` program to start the bot as a console::
 
- $ opb -c 
+ $ opb
  OPB started at Fri Jan 6 01:49:58 2023
  > cmd
  cmd,dlt,dpl,flt,ftc,krn,log,met,mre,nme,pwd,rem,rss,thr,upt
  >
 
+running the bot in the background is done by starting ``opbd``:
 
-running the bot in the background is done with the -d option::
-
- $ opb -d
+ $ opbd
  $
+
+
+**24/7**
+
+
+   24/7 and how todo that is still under discussion
 
 
 **COMMANDS**
@@ -168,7 +180,7 @@ factored out into functions to have a clean namespace to read JSON data into.
 
 basic usage is this::
 
- >>> from opb import Object
+ >>> from opb.objects import Object
  >>> o = Object()
  >>> o.key = "value"
  >>> o.key
@@ -181,7 +193,7 @@ and values.
 
 load/save from/to disk::
 
- >>> from opb import Object, load, save
+ >>> from opb.objects import Object, load, save
  >>> o = Object()
  >>> o.key = "value"
  >>> p = save(o)
@@ -192,26 +204,10 @@ load/save from/to disk::
 
 great for giving objects peristence by having their state stored in files::
 
- >>> from opb import Object, save
+ >>> from opb.objects import Object, save
  >>> o = Object()
  >>> save(o)
  opb.objects.Object/89efa5fd7ad9497b96fdcb5f01477320/2022-11-21/17:20:12.221192
-
-
-**SYSTEMD**
-
-
-to run the bot after reboot, install the service file and start the service
-by enabling it with ``--now``::
-
-
- $ sudo cp /usr/local/opb/opb.service /etc/systemd/system
- $ sudo systemctl enable opb  --now
-
- (*) default channel/server is #opb on localhost
-
-
-use ``opbctl`` instead of the use ``opb`` program.
 
 
 **AUTHOR**
@@ -223,4 +219,4 @@ B.H.J. Thate - operbot100@gmail.com
 **COPYRIGHT**
 
 
-``OPB`` is placed in the Public Domain.
+``opb`` is placed in the Public Domain.
