@@ -139,7 +139,7 @@ running the bot in the background is done by starting ``opbd``::
 **24/7**
 
 
-   24/7 and how todo that is still under discussion
+24/7 and how todo that is still under discussion
 
 
 **COMMANDS**
