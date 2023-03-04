@@ -116,7 +116,7 @@ the ``cmd`` command shows you a list of available commands::
 
 
  $ opbc cmd
- cfg,cmd,dlt,dpl,flt,fnd,ftc,met,krn,mre,nme,pwd,rem,rss,thr,upt
+ cfg,cmd,dlt,dpl,flt,fnd,ftc,met,mre,nme,pwd,rem,rss,thr,upt
 
 
 **console**
@@ -127,7 +127,7 @@ use the ``opb`` program to start the bot as a console::
  $ opb
  OPB started at Fri Jan 6 01:49:58 2023
  > cmd
- cmd,dlt,dpl,flt,ftc,krn,log,met,mre,nme,pwd,rem,rss,thr,upt
+ cfg,cmd,dlt,dpl,flt,ftc,krn,log,met,mre,nme,pwd,rem,rss,thr,upt
  >
 
 running the bot in the background is done by starting ``opbd``::
@@ -155,7 +155,6 @@ here is a short description of the commands::
  flt - show a list of bot registered to the bus
  fnd - allow you to display objects on the datastore, read-only json files on disk 
  ftc - run a rss feed fetching batch
- krn - kernel
  log - log some text
  met - add a users with there irc userhost
  mre - displays cached output, channel wise.
@@ -166,7 +165,6 @@ here is a short description of the commands::
  thr - show the running threads
  tdo - adds a todo item, no options returns list of todo's
  upt - show uptime
- ver - show version
 
 
 **PROGRAMMING**
