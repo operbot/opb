@@ -49,8 +49,7 @@ setup(
     scripts=[
              "bin/opb",
              "bin/opbc",
-             "bin/opbd",
-             "bin/opbctl"
+             "bin/opbd"
             ],
     classifiers=[
         "Development Status :: 3 - Alpha",
