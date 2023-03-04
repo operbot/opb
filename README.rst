@@ -191,18 +191,6 @@ attribute access as well. hidden methods are provided, the methods are
 factored out into functions like get, items, keys, register, set, update
 and values.
 
-load/save from/to disk::
-
- >>> from opb.objects import Object, load, save
- >>> from opb.storage import Storage
- >>> o = Object()
- >>> o.key = "value"
- >>> p = Storage.save(o)
- >>> obj = Object()
- >>> Storage.load(obj, p)
- >>> obj.key
- >>> 'value'
-
 great for giving objects peristence by having their state stored in files::
 
  >>> from opb.objects import Object, save
