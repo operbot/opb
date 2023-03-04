@@ -194,11 +194,12 @@ and values.
 load/save from/to disk::
 
  >>> from opb.objects import Object, load, save
+ >>> from opb.storage import Storage
  >>> o = Object()
  >>> o.key = "value"
- >>> p = save(o)
+ >>> p = Storage.save(o)
  >>> obj = Object()
- >>> load(obj, p)
+ >>> Storage.load(obj, p)
  >>> obj.key
  >>> 'value'
 
@@ -206,7 +207,8 @@ great for giving objects peristence by having their state stored in files::
 
  >>> from opb.objects import Object, save
  >>> o = Object()
- >>> save(o)
+ >>> from opb.storage import Storage
+ >>> Storage.save(o)
  opb.objects.Object/89efa5fd7ad9497b96fdcb5f01477320/2022-11-21/17:20:12.221192
 
 
