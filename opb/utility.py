@@ -129,6 +129,6 @@ def spl(txt):
     return [x for x in res if x]
 
 
-def wait(self):
+def wait():
     while 1:
         time.sleep(1.0)
